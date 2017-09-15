@@ -1,0 +1,40 @@
+@import url(base.less);
+.wrapper{
+  background: #fff;
+}
+.searchNameList{
+  padding: 0 0.4839rem;
+  background: #fff;
+  li{
+    padding: 0.4839rem 0 0.4839rem 0;
+    line-height: 0.4839rem;
+    font-size: 0.3871rem;
+    color: #222;
+    border-bottom:1px solid #ddd;
+    position:relative;
+    .tit{
+      width: 100%;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+    }
+    .addr{
+      margin: 0.2419rem 0 0 0;
+      line-height: 0.4839rem;
+      font-size: 0.3226rem;
+      color: #999;
+      .clearfix();
+      .text{
+        width: 6.0516rem;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        float: left;
+      }
+      .distance{
+        float: right;
+      }
+    }
+  }
+}

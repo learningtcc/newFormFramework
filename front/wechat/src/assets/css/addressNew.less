@@ -1,0 +1,75 @@
+@import url(base.less);
+/**新增/修改地址**/
+.user-add-new{
+  background: #fff;
+  padding: 0 0.3226rem;
+  margin: 0 0 0.2419rem 0;
+  .border_1px_bottom();
+  li{
+    height: 1.1774rem;
+    line-height: 1.1774rem;
+    font-size: 0.3871rem;
+    .border_1px_top();
+    .clearfix();
+    &:nth-of-type(1){
+      &:before{
+        border:0;
+      }
+    }
+    &.addr{
+      height: auto;
+    }
+    .tit{
+      width: 2.2581rem;
+      color: #333;
+      float: left;
+    }
+    .address-content{
+      height: 100%;
+      float: left;
+      &.addrCheck{
+        float: none;
+        float: right;
+        .weui-switch{
+          margin: 0.1613rem;
+        }
+      }
+    }
+    .txt_common{
+      width: 6.7742rem;
+      height: 100%;
+      border:0;
+      font-size: 0.3871rem;
+      vertical-align: top;
+      display: inline-block;
+      background: #fff;
+    }
+    .texta{
+      padding: 0.306rem 0 0 0;
+      width: 6.7742rem;
+      height: 2.8226rem;
+      line-height: 0.4839rem;
+      border:0;
+      resize:none;
+    }
+  }
+  
+}
+
+.btn{
+  width: 100%;
+  padding:0.2419rem 0.4839rem 0.4839rem;
+  background: #f2f3f4;
+  box-sizing: border-box;
+  span{
+    .link_btn;
+  }
+}
+.arrow{
+  .arrowRt();
+  position: absolute;
+  right: 0;
+  top:50%;
+  transform:translate(0,-50%) rotate(45deg);
+  -webkit-transform:translate(0,-50%) rotate(45deg); 
+}

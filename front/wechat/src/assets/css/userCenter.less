@@ -1,0 +1,70 @@
+@import url(base.less);
+.u_head{
+  height: 4.0323rem;
+  background: url(../img/user/headbg.jpg) center center no-repeat;
+  background-size: 100% 100%;
+  text-align: center;
+  position: relative;
+  display: block;
+  .avatar{
+    @size:1.8548rem;
+    height:@size;
+    padding: 0.5161rem 0 0 0;
+    img{
+      width: @size;
+      height: @size;
+      .border_radius(50%);
+    }
+  }
+  .nickname{
+    line-height: 0.8871rem;
+    color: #fff;
+    font-size: 0.3871rem;
+  }
+  .arrowR{
+    position: absolute;
+    right: 0.4839rem;
+    top:46%;
+    transform:translate(0,-50%);
+    -webkit-transform:translate(0,-50%); 
+    .arrowRt(0.2823rem,0.2823rem,0.0323rem,#fff);
+  }
+}
+.userCenter_list{
+  margin: 0 0 0.2419rem 0;
+  padding: 0 0.4839rem 0;
+  background: #fff;
+  li{
+    height: 1.2742rem;
+    line-height: 1.2742rem;
+    .border_1px_bottom();
+    &:last-of-type{
+      &:after{
+        border:0;
+      }
+    }
+  }
+  a{
+    height: 100%;
+    font-size: 0.3871rem;
+    color: #222;
+    display: block;
+    .clearfix();
+    .icon{
+      width: 0.9677rem;
+      height: 100%;
+      display: inline-block;
+      vertical-align: middle;
+      img{
+        width: auto;
+        height: 0.5645rem;
+        vertical-align: middle;
+      }
+    }
+    .arrow{
+      margin: 0.4435rem 0 0 0;
+      .arrowRt();
+      float: right;
+    }
+  }
+}

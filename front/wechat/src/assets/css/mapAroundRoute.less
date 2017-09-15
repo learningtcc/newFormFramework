@@ -1,0 +1,191 @@
+@import url(base.less);
+.wrapper{
+  height: 100%;
+}
+.streetsView{
+  width: 1.2097rem;
+  line-height: 0.4839rem;
+  padding: 1.1129rem 0 0.1935rem 0;
+  font-size: 0.3387rem;
+  color: #222;
+  background: #fff url(../img/map/street.png) center 0.2581rem no-repeat;
+  background-size: auto 0.7258rem;
+  text-align: center;
+  position: fixed;
+  right: 0.4839rem;
+  top:0.4839rem;
+  z-index: 10;
+  box-shadow:0 0.121rem 0.2016rem rgba(0,0,0,0.4);
+  -webkit-box-shadow:0 0.121rem 0.2016rem rgba(0,0,0,0.4);
+  border-radius:0.0806rem;
+  -webkit-border-radius:0.0806rem;
+}
+.mapView{
+  height: 100%;
+}
+.type_tab{
+  width: 100%;
+  height: 1.4516rem;
+  background: #fff;
+  position: fixed;
+  top:0;
+  left:0;
+  z-index:10;
+  ul{
+    height: 100%;
+    margin: 0 -1.3258rem 0 0;
+    position: absolute;
+    top:0;
+    left: 50%;
+    transform:translate(-50%,0);
+    -webkit-transform:translate(-50%,0); 
+    .clearfix();
+  }
+  li{
+    padding: 0 0.3226rem;
+    height: 100%;
+    float: left;
+    a{
+      width: 1.371rem;
+      height: 100%;
+      text-align: center;
+      display: block;
+      box-sizing: border-box;
+    }
+    &.active{
+      a{
+        border-bottom:0.0484rem solid #2182f7;
+      }
+    }
+    &:nth-of-type(1){
+      background: url(../img/map/route_bus.png) center center no-repeat;
+      background-size: auto 0.6048rem;
+      &.active{
+        background: url(../img/map/route_busH.png) center center no-repeat;
+        background-size: auto 0.6048rem;
+      }
+    }
+    &:nth-of-type(2){
+      background: url(../img/map/route_taxi.png) center center no-repeat;
+      background-size: auto 0.5403rem;
+      &.active{
+        background: url(../img/map/route_taxiH.png) center center no-repeat;
+        background-size: auto 0.5403rem;
+      }
+    }
+    &:nth-of-type(3){
+      background: url(../img/map/route_walking.png) center center no-repeat;
+      background-size: auto 0.6048rem;
+      &.active{
+        background: url(../img/map/route_walkingH.png) center center no-repeat;
+      background-size: auto 0.6048rem;
+      }
+    }
+  }
+}
+.route_bottom{
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left:0;
+  z-index:10;
+  .routelist{
+    padding: 0.2419rem 0;
+    background: #fff;
+    line-height: 0.6452rem;
+    text-align: center;
+    overflow: hidden;
+    ul{
+      margin:0 -0.0403rem 0 0;
+    }
+    li{
+      border-right: 1px solid #ddd;
+    }
+    .tit{
+      font-size: 0.3226rem;
+      color: #999;
+    }
+    .time{
+      font-size: 0.3871rem;
+      color: #222;
+    }
+    .distance{
+      font-size: 0.3226rem;
+      color: #999;
+    }
+  }
+  .info_about{
+    padding: 0 0.4839rem 0.4839rem;
+    background: #f2f3f4;
+    .top{
+      padding: 0.3629rem 0;
+      font-size: 0.3226rem;
+      color: #999;
+      .clearfix();
+      .traffic_light{
+        padding: 0 0 0 0.5645rem;
+        background: url(../img/map/trafficLight.png) left center no-repeat;
+        background-size: auto 0.3871rem;
+        float: left;
+      }
+      .taxi_fare{
+        float: right;
+      }
+    }
+    .nav_guide{
+      width: 100%;
+      height: 1.2903rem;
+      line-height: 1.2903rem;
+      background: #2182f7;
+      color: #fff;
+      font-size: 0.3871rem;
+      text-align: center;
+      border-radius: 0.0806rem;
+      -webkit-border-radius: 0.0806rem;
+    }
+  }
+}
+.route-location-wrap{
+  position:relative;
+  .clearfix();
+}
+.location{
+  width: 1.2097rem;
+  height: 1.2097rem;
+  background: #fff;
+  border-radius:0.0806rem;
+  background: #fff url(../img/map/location.png) center center no-repeat;
+  background-size: 0.6452rem auto;
+  box-shadow:0 0.121rem 0.2016rem rgba(0,0,0,0.4);
+  -webkit-box-shadow:0 0.121rem 0.2016rem rgba(0,0,0,0.4);
+  position:absolute;
+  left:0.4839rem;
+  bottom:0.5645rem;
+}
+.zoom{
+  width: 1.2097rem;
+  background: #fff;
+  overflow:hidden;
+  border-radius:0.0806rem 0.0806rem 0 0;
+  box-shadow:0 0.121rem 0.2016rem rgba(0,0,0,0.4);
+  -webkit-box-shadow:0 0.121rem 0.2016rem rgba(0,0,0,0.4);
+  position:absolute;
+  right:0.4839rem;
+  bottom:0.5645rem;
+  ul{
+    margin:0 0 -0.0403rem 0;
+  }
+  li{
+    width: 100%;
+    height: 1.2097rem;
+    line-height: 1.1097rem;
+    text-align:center;
+    font-size: 0.9274rem;
+    color: #333;
+    border-bottom:1px solid #ccc;
+    display: block;
+    &.unclick{
+      color: #ccc;
+    }
+  }
+}

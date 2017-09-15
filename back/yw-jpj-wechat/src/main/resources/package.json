@@ -1,0 +1,17 @@
+[
+  {
+    "system_title":"义务精品街微信api接口",
+    "system_code":"ywjpj_cms",
+    "system_description":"义务精品街微信api接口",
+    "appid":"ywjpj_cms",
+    "appsecret":"ywjpj_cms",
+    "enable":true,
+    "wxConfig":{
+      "appid":"wx64e2d6f069148875",
+      "appsecret":"48fd6656685f6dc87af42569190367c8",
+      "redirect_url":"http://ywjpj.drdss.com/macro/weixin/getUserInfo",
+      "notify_url":"http://ywjpj.drdss.com/macro/pay/wx_notify_callback"
+    },
+    "exclude_api_resources":["order_info","order_detail","integral_record_info","member_info","guide_order_info","sos_helpful","seller_info"]
+  }
+]

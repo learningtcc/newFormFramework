@@ -1,0 +1,202 @@
+.theme{
+	padding: 0.48rem 0;
+	height: 100%;
+	width: 100%;
+	position: relative;
+	.themeSearch{
+		height: 1.77rem;
+		padding: 0 0.48rem;
+		.screen{
+			float: left;
+			color: #222222;
+			font-size: 0.36rem;
+			margin-top: 0.45rem;
+			width: 1.9rem;
+			background: url('../img/consult/guide.png') no-repeat right center;
+			background-size: 0.24rem 0.16rem;
+		}
+		.screenA{
+			color: #ff3000;
+			background: url('../img/consult/guide1.png') no-repeat right center;
+			background-size: 0.24rem 0.16rem;
+		}
+		.searchBtn{
+			float: right;
+			border: none;
+			border: 1px solid #ddd;
+			height: 1.25rem;
+			line-height: 1.25rem;
+			width: 5.55rem;
+			border-radius: 4px;
+			color: #999999;
+			font-size: 0.38rem;
+			padding-left: 1.2rem;
+			background: #f9f9f9 url('../img/consult/sea.png') no-repeat 0.4rem center;
+			background-size: 0.52rem;
+		}
+	}
+	.classifyBg{
+		height: 100%;
+		width: 100%;
+		display: none;
+		ul{
+			background: #fff;
+			position: absolute;
+		    top: 2.22rem;
+		    left: 0;
+		    width: 100%;
+		    z-index: 999;
+			li{
+				height: 1.25rem;
+				line-height: 1.25rem;
+				border-top: 1px solid #cccccc;
+				font-size:0.36rem;
+				color: #333333;
+				margin: 0 0.48rem;
+			}
+			.active{
+				color: #ff3000;
+				background: url('../img/consult/classify.png') no-repeat right center;
+				background-size: 0.35rem 0.22rem;
+			}
+		}
+		.classifyB{
+			background: #383330;
+			opacity: 0.6;
+			height: 100%;
+			width: 100%;
+			position:fixed;
+			top: 2.22rem;
+			left: 0;
+			z-index: 500;
+		}
+	}
+	.classifyBg1{
+		display: block;
+	}
+	.centre{
+		clear: both;
+		height: 0.24rem;
+		background: #f2f3f4;
+	}
+	.newA{
+		color: #222222;
+		font-size: 0.36rem;
+		margin-bottom: 0.3rem;
+		padding: 0 0.48rem;
+		margin-top: 0.3rem;
+	}
+	.themeNew{
+		height: 5rem;
+		margin: 0 0.48rem;
+		position: relative;
+		.themeImg{
+			height: 5rem;
+			object-fit:cover;
+			width: 100%;
+		}
+		.themeHot{
+			background: #ff3000;
+			padding: 0.1rem;
+			color: #fff;
+			font-size: 0.24rem;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	}
+	.themeCon{
+		height: 2.45rem;
+		margin: 0 0.48rem;
+		border-bottom: 1px solid #dddddd;
+		.themeTime{
+			color: #ff3000;
+			font-size: 0.31rem;
+			line-height: 0.48rem;
+			margin-top: 0.4rem;
+		}
+		.themeName{
+			color: #222;
+			font-size: 0.36rem;
+			line-height: 1rem;
+			width: 7.2rem;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		.themeIntro{
+			color: #999999;
+			font-size: 0.34rem;
+		}
+	}
+	.moreActivitiy{
+		padding-bottom: 0.4rem;
+		padding: 0 0.48rem;
+		h4{
+			color: #222222;
+			font-size: 0.36rem;
+			line-height: 1rem;	
+			margin-top: 0.3rem;
+		}
+		dl{
+			height: 2.2rem;
+			margin-bottom: 0.46rem;
+			dt{
+				float: left;
+				margin-right: 0.32rem;
+				height: 2.2rem;
+				position: relative;
+				img{
+					height: 2.2rem;
+					width: 2.9rem;
+					display: block;
+					object-fit:cover;
+				}
+				span{
+					background: #ff3000;
+					color: #fff;
+					padding: 0.1rem 0.22rem;
+					font-size: 0.26rem;
+					position: absolute;
+					top: 0;
+					left: 0;
+				}
+			}
+			dd{
+				float: left;
+				width: 5.8rem;
+				color: #999999;
+				font-size: 0.28rem;
+				.activityName{
+					font-size: 0.36rem;
+					color: #222222;
+					font-weight: 600;
+					/* line-height: 0.35rem; */
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+				}
+				.activityIntro{
+					height: 1.1rem;
+					/* padding-top: 0.17rem;  */
+					overflow : hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+				}
+				.activityTime{
+					color: #ff3000;
+					line-height: 0.28rem;
+				}
+				.activityLook{
+					float: right;
+					padding-left: 0.48rem;
+					background:url('../img/consult/activityLook.png') no-repeat left center;
+					background-size: 0.37rem 0.24rem;
+					line-height: 0.28rem;
+				}
+			}
+		}
+	}
+}

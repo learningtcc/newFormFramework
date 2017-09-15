@@ -1,0 +1,78 @@
+@import url(base.less);
+.wrapper{
+  background: #fff;
+}
+.m_tab{
+  width: 100%;
+  height: 1.2903rem;
+  line-height: 1.2581rem;
+  border-bottom:1px solid #ddd;
+  position: relative;
+  ul{
+    position: absolute;
+    left: 50%;
+    top:0;
+    transform:translate(-50%,0);
+    -webkit-transform:translate(-50%,0);
+  }
+  li{
+    padding: 0 0.6855rem;
+    float: left;
+    &.active{
+      a{
+        color: #222;
+        border-bottom:0.0484rem solid #2182f7;
+      }
+    }
+    a{
+      font-size: 0.3871rem;
+      color: #999;
+      display: block;
+      box-sizing: border-box;
+    }
+  }
+}
+.m_lists{
+  padding: 0 0.4839rem;
+    dl{
+      border-bottom: 1px solid #ddd;
+      padding:0.4839rem 0; 
+      .clearfix();
+      dt{
+        height: 1.9355rem;
+        float: left;
+        margin-right: 0.5rem;
+        img{
+          width: 1.9355rem;
+          height: 100%;
+          object-fit:cover;
+          display: block;
+        }
+      }
+      dd{
+        color: #999;
+        font-size: 0.3rem;
+        float: left;
+        .shopName{
+          width: 6.371rem;
+          color: #222;
+          font-size: 0.38rem;
+          font-weight: 600;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .shopTime{
+        }
+        .shopPrice{
+          color: #222;
+          margin-top: 0.3rem;
+          span{
+            color: #ff3000;
+            font-size: 0.34rem;
+          }
+        }
+      }
+    }
+    
+  }

@@ -1,0 +1,118 @@
+@import url(base.less);
+.txt_person{
+  height: 100%;
+  text-align: right;
+  border:0;
+  vertical-align: top;
+  background: transparent;
+}
+.person{
+  background:#fff;
+  padding:0 0.4839rem;
+  .head{
+    height:2.5rem;
+    border-bottom:1px solid #eee;
+    p{
+      float:left;
+      padding-top:1rem;
+      font-size:.4rem;
+    }
+    img{
+      float:right;
+      margin-right:0;
+      margin-top:.6rem;
+      width:1.3rem;
+      height:1.3rem;
+      object-fit:cover;
+      border-radius:50%;
+      -webkit-border-radius:50%;
+    }
+  }
+  .info_list{
+    height:1.4113rem;
+    line-height: 1.4113rem;
+    border-bottom:1px solid #eee;
+    display: block;
+    p{
+      float:left;
+      font-size:0.3871rem;
+      color: #333;
+    }
+    span{
+      height: 100%;
+      float:right;
+      font-size:0.3871rem;
+      color:#666;
+    }
+    em{
+      height: 100%;
+      font-size: 0.3871rem;
+      color: #666;
+      display: inline-block;
+      vertical-align: top;
+    }
+    .arrow{
+      .arrowRt(0.2097rem,0.2097rem,0.0323rem,#aaa);
+      vertical-align: middle;
+      margin: -0.0645rem 0 0 0.1613rem;
+    }
+  }
+}
+// 昵称修改
+.userInfoFix{
+  padding: 0 0.4839rem;
+  background: #fff;
+  dl{
+    height: 1.4919rem;
+    line-height: 1.4919rem;
+    position: relative;
+    .flex_box();
+    dt{
+      img{
+        width: 0.5rem;
+        height: auto;
+        margin: 0 0.2903rem 0 0;
+      }
+      .ico_phone{
+        width: 0.3145rem;
+        height: auto;
+      }
+      .tit{
+        font-size: 0.4194rem;
+        color: #333;
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
+    dd{
+      .common_input{
+        width: 7.5581rem;
+        padding: 0 0 0 0.3226rem;
+        color: #666;
+        border:0;
+        font-size: 0.3871rem;
+        background: transparent;
+        outline:none;
+        .boxb();
+      }
+    }
+  }
+}
+//确认按钮
+.submit_out{
+  padding: 0.5323rem 0.4839rem 0;
+}
+.submit_btn{
+  width: 100%;
+  display: block;
+  height: 1.2903rem;
+  line-height: 1.2903rem;
+  background: #2182f7;
+  color: #fff;
+  font-size: .4rem;
+  text-align: center;
+  border-radius: .1rem;
+  &:active{
+    opacity: 0.9;
+  }
+}

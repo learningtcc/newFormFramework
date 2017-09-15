@@ -1,0 +1,130 @@
+.tenementDetail{
+	height: 100%;
+	width: 100%;
+	.header{
+		width: 100%;
+		height: 5.08rem;
+		.banner{
+			width: 100%;
+			height: 5.08rem;
+			img{
+				width: 100%;
+				height: 5.08rem;
+				object-fit:cover;
+			}
+		}
+	}
+	.tenementMain{
+		height: 4.8rem;
+		padding: 0 0.48rem;
+		.tenementLeft{
+			float: left;
+			color: #222222;
+			font-size: 0.31rem;
+			width: 6.45rem;
+			.tenementName{
+				font-size: 0.37rem;
+				line-height: 0.85rem;
+				font-weight: 700;
+				margin-top: 0.24rem;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			.tenementArea{
+				color: #999999;
+				line-height: 0.84rem;
+			}
+			.tenementPrice{
+				line-height: 0.84rem;
+				span{
+					color: #ff3000;
+					font-size: 0.36rem;
+				}
+			}
+			.tenementAddress{
+				line-height: 0.84rem;
+				width: 6rem;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				span{
+					color: #2182f7;
+					background:url('../img/consult/address.png') no-repeat right center;
+					background-size: 0.3rem 0.3rem;	
+					padding-right: 0.5rem;
+				}
+			}
+			.tenementTime{
+				color: #cccccc;
+				padding-left: 0.45rem;
+				line-height: 0.84rem;
+				background:url('../img/consult/time.png') no-repeat left center;
+				background-size: 0.33rem 0.33rem;
+			}
+		}
+		.tenementRight{
+			float: right;
+			height: 1rem;
+			width: 1rem;
+			margin-top: 0.24rem;
+			background:url('../img/consult/tel.png') no-repeat center;
+			background-size: 1rem;
+		}
+	}
+	.tenementIntro{
+		/* height: 5.65rem; */
+		margin: 0 0.48rem;
+		border-bottom: 1px solid #dddddd;
+		border-top: 1px solid #dddddd;
+		padding: 0.4rem 0;
+		h4{
+			line-height: 0.8rem;
+			color: #222222;
+			font-size: 0.36rem;
+		}
+		.tenementContent{
+			font-size: 0.34rem;
+			color: #777777;
+			text-indent: 2em;
+		}
+	}
+	.moreStore{
+		margin: 0 0.48rem;
+		padding: 0.4rem 0;
+		h4{
+			line-height: 0.8rem;
+			color: #222;
+			font-size: 0.36rem;
+			margin-bottom: 0.2rem;
+		}
+		.storeList dl:nth-child(1){
+			margin-right: 0.24rem;
+		}
+		.storeList dl{
+			width: 4.4rem;
+			float: left;
+			padding-bottom: 0.2rem;
+			img{
+				width: 4.4rem;
+				height: 2.9rem;
+				object-fit:cover;
+			}
+			.storeName{
+				font-size: 0.37rem;
+				font-weight: 700;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			.storePrice{
+				line-height: 0.84rem;
+				font-size: 0.31rem;
+				span{
+					color: #ff3000;
+					font-size: 0.36rem;
+				}
+			}
+		}
+	}
+}

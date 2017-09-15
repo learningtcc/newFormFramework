@@ -1,0 +1,44 @@
+@import url(base.less);
+.wrapper{
+  
+}
+.interaction_box{
+  padding: 0.4839rem;
+  background: #fff;
+  .list{
+    overflow: hidden;
+  }
+  .list_in{
+    margin: -0.4839rem -0.0806rem -0.4839rem 0;
+    .clearfix();
+  }
+  a{
+    width: 50%;
+    display: block;
+    float: left;
+    box-sizing: border-box;
+  }
+  .dl{
+    padding: 0.4839rem 0 0.3039rem;
+    text-align: center;
+    border-right: 1px solid #ccc;
+    border-bottom:1px solid #ccc;
+  }
+  .dt{
+    @size:2.0968rem;
+    height: @size;
+    display: block;
+    img{
+      width:@size;
+      height: @size;
+      object-fit:cover;
+    }
+  }
+  .dd{
+    line-height: 0.8065rem;
+    font-size: 0.3871rem;
+    color: #222;
+    display: block;
+    .ell();
+  }
+}
