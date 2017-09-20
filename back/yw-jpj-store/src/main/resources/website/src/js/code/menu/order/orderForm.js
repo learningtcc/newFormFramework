@@ -182,12 +182,20 @@ export default function orderForm(opt){
                             format: 'yyyy-MM-dd HH:mm:ss'
                         }));
                         let  temp_orderStatus = '';
-                        if($(opt.component).find('input[name="orderTime"]').val() == 'NoPay'){
-                            temp_orderStatus = '未付款';
-                        }else if($(opt.component).find('input[name="orderTime"]').val() == 'HasPay'){
+                        if($(opt.component).find('input[name="orderStatus"]').val() == 'HasCancel'){
+                            temp_orderStatus = '已取消';
+                        }else if($(opt.component).find('input[name="orderStatus"]').val() == 'NoPay'){
+                            temp_orderStatus = '待付款';
+                        }else if($(opt.component).find('input[name="orderStatus"]').val() == 'HasPay'){
                             temp_orderStatus = '已付款';
-                        }else {
+                        }else if($(opt.component).find('input[name="orderStatus"]').val() == 'NoReceive'){
+                            temp_orderStatus = '待收货';
+                        }else if($(opt.component).find('input[name="orderStatus"]').val() == 'Received'){
                             temp_orderStatus = '已收货';
+                        }else if($(opt.component).find('input[name="orderStatus"]').val() == 'Cancel'){
+                            temp_orderStatus = '订单过期';
+                        }else {
+                            temp_orderStatus = '交易完成';
                         }
                         $(opt.component).find('input[name="orderStatus"]').val(temp_orderStatus);
 

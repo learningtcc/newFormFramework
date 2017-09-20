@@ -28,8 +28,7 @@ public class CommodityController {
     private CommodityService commodityService;
 
 
-//    @Login
-    @ApiOperation(value = "商品详情——何仁杰",notes = "返回参数data:{商品信息:commodity_info;商品评价列表:evaluation_list}")
+    @ApiOperation(value = "商品详情——何仁杰",notes = "返回参数data:{商品信息:commodity_info;商铺信息:store_info}")
     @ApiImplicitParam(name = "id",value = "商品主键id",dataType = "string",required = true)
     @PostMapping("/detail")
     public RestMessage CommodityDetail(@RequestParam("id") String commodityId){

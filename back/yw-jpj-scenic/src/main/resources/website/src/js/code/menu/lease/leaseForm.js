@@ -52,6 +52,10 @@ export default function leaseForm (opt) {
           name: 'price',
           readonly: true
         }, {
+          label: '价格(元/天)',
+          name: 'otherPrice',
+          readonly: true
+        }, {
           label: '地址',
           name: 'address',
           readonly: true
@@ -62,6 +66,11 @@ export default function leaseForm (opt) {
       }
     }, {
       column: [
+        {
+          label: '地址',
+          name: 'address',
+          readonly: true
+        },
         {
           label: '经度',
           name: 'longitude',

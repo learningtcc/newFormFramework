@@ -1,5 +1,6 @@
 package com.drore.cloud.vo;
 
+import com.google.gson.JsonArray;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Range;
 
@@ -15,30 +16,25 @@ import javax.validation.constraints.NotNull;
  */
 
 public class TotalVo {
-    @NotNull(message = "商品id不能为空")
-    @ApiModelProperty("商品id")
-    private String commodity_id;
-    @ApiModelProperty("购买数量")
-    @Range(min=1,message = "商品数量必须大于0")
-    private Integer buy_num;
-    @NotNull(message = "优惠券id不能为空")
+//    @NotNull(message = "商品id不能为空")
+//    @ApiModelProperty("商品id")
+//    private String commodity_id;
+//    @ApiModelProperty("购买数量")
+//    @Range(min=1,message = "商品数量必须大于0")
+//    private Integer buy_num;
+    @NotNull(message = "商品信息不能为空")
+    @ApiModelProperty("商品信息")
+    private String commodity_info;
+//    @NotNull(message = "优惠券id不能为空")
     @ApiModelProperty("优惠券id")
     private String offer_voucher_id;
 
-    public String getCommodity_id() {
-        return commodity_id;
+    public String getCommodity_info() {
+        return commodity_info;
     }
 
-    public void setCommodity_id(String commodity_id) {
-        this.commodity_id = commodity_id;
-    }
-
-    public Integer getBuy_num() {
-        return buy_num;
-    }
-
-    public void setBuy_num(Integer buy_num) {
-        this.buy_num = buy_num;
+    public void setCommodity_info(String commodity_info) {
+        this.commodity_info = commodity_info;
     }
 
     public String getOffer_voucher_id() {

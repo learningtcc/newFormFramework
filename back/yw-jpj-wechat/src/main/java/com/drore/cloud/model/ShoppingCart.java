@@ -24,6 +24,8 @@ public class ShoppingCart implements Serializable {
     private String commodity_id;
     @ApiModelProperty("商品名称")
     private String commodity_name;
+    @ApiModelProperty("商品图片")
+    private String commodity_image;
     @Range(min=1,message = "商品数量必须大于0")
     @ApiModelProperty("商品数量")
     private Integer num;
@@ -53,6 +55,14 @@ public class ShoppingCart implements Serializable {
 
     public void setCommodity_id(String commodity_id) {
         this.commodity_id = commodity_id;
+    }
+
+    public String getCommodity_image() {
+        return commodity_image;
+    }
+
+    public void setCommodity_image(String commodity_image) {
+        this.commodity_image = commodity_image;
     }
 
     public String getCommodity_name() {

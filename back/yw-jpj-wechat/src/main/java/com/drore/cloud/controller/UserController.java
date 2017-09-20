@@ -40,13 +40,13 @@ public class UserController {
 //***********************用户评价************
 
     //评价列表
-    public Pagination<Map> evaluateList(@RequestParam(value = "current_page",defaultValue = "1") Integer current_page,
-                                        @RequestParam(value = "page_size",defaultValue = "5") Integer page_size){
-        return null;
-    }
+//    public Pagination<Map> evaluateList(@RequestParam(value = "current_page",defaultValue = "1") Integer current_page,
+//                                        @RequestParam(value = "page_size",defaultValue = "5") Integer page_size){
+//        return null;
+//    }
 
 //*******************我的收藏*********************
-//    @Login
+    @Login
     @ApiOperation(value = "用户收藏——何仁杰")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "commodity_id",value = "店铺/商品id",dataType = "string",required = true),
@@ -60,7 +60,7 @@ public class UserController {
         return userService.collection(commodity_id,collection_type,is_collection);
     }
 
-//    @Login
+    @Login
     @ApiOperation(value = "我的收藏——何仁杰",notes = "返回参数:店铺类型对应取值对象：store_info;商品类型对应取值")
     @ApiImplicitParam(name = "collection_type",value = "收藏类型(默认为店铺:Store;商品:Commodity)")
     @PostMapping("/userCollection")
@@ -70,7 +70,7 @@ public class UserController {
         return userService.userCollection(collection_type,current_page,page_size);
     }
 
-    //    @Login
+    @Login
     @ApiOperation(value = "我的互动——张豪",notes = "返回参数:互动内容对应取值对象：interactive_content;互动内容对应取值")
     @PostMapping("/userInteractive")
     public RestMessage userInteractive(@RequestParam(value = "current_page",defaultValue = "1") Integer current_page,
@@ -78,15 +78,40 @@ public class UserController {
         return interactiveService.getInteractiveContentListByPublisher(page_size,current_page);
     }
 
-    //    @Login
+    //@Login
+    @ApiOperation(value = "我的消息列表——张豪",notes = "返回参数:消息详情对应取值对象：MessageInfo;消息详情对应取值")
+    @PostMapping("/getUserMessageList")
+    public RestMessage getUserMessageList(@RequestParam(value = "current_page",defaultValue = "1") Integer current_page,
+                                          @RequestParam(value = "page_size",defaultValue = "5") Integer page_size){
+        return userService.getUserMessageList(current_page,page_size);
+    }
+
+    //@Login
+    @ApiOperation(value = "查询消息详情——张豪",notes = "返回参数:消息详情对应取值对象：MessageInfo;消息详情对应取值")
+    @ApiImplicitParam(name = "id",value = "消息主键",dataType = "string",required = true)
+    @PostMapping("/getUserMessage")
+    public RestMessage getUserMessage(@RequestParam("id") String id){
+
+        return userService.getUserMessage(id);
+    }
+
+    @Login
+    @ApiOperation(value = "删除消息——张豪",notes = "返回参数:删除成功或失败参数")
+    @ApiImplicitParam(name = "id",value = "消息主键",dataType = "string",required = true)
+    @PostMapping("/deleteUserMessage")
+    public RestMessage deleteUserMessage(@RequestParam("id") String id){
+
+        return userService.deleteUserMessage(id);
+    }
+
+    @Login
     @ApiOperation(value = "个人信息——张豪",notes = "返回参数:个人信息对应取值对象：member_info;个人信息对应取值")
     @PostMapping("/userInfo")
     public RestMessage userInfo(){
-
        return userService.userInfo();
     }
 
-    //    @Login
+    @Login
     @ApiOperation(value = "修改个人信息（昵称）——张豪",notes = "返回参数:修改成功或失败参数")
     @ApiImplicitParam(name = "nickName",value = "昵称",dataType = "string",required = true)
     @PostMapping("/updateUserInfo")
@@ -95,12 +120,11 @@ public class UserController {
         return userService.updateUserNickName(nickName);
     }
 
-    //    @Login
+    @Login
     @ApiOperation(value = "修改个人信息（电话）——张豪",notes = "返回参数:修改成功或失败参数")
     @ApiImplicitParam(name = "tel",value = "电话",dataType = "string",required = true)
     @PostMapping("/updateUserTel")
     public RestMessage updateUserTel(@RequestParam("tel") String tel){
-
         return userService.updateUserTel(tel);
     }
 
@@ -111,13 +135,13 @@ public class UserController {
             @ApiImplicitParam(name = "current_page",value = "当前页",dataType = "int",required = true),
             @ApiImplicitParam(name = "page_size",value = "每页的条数",dataType = "int",required = true)})
     @RequestMapping(value = "/addressList",method = RequestMethod.POST)
-    public RestMessage addressList(@RequestParam(value = "current_page",defaultValue = "1") int current_page
+    public Pagination<AddressInfo> addressList(@RequestParam(value = "current_page",defaultValue = "1") int current_page
             , @RequestParam(value = "page_size",defaultValue = "5") int page_size){
-        return new RestMessage(addressService.findMyAddress(current_page,page_size));
+        return addressService.findMyAddress(current_page,page_size);
     }
 
 
-//    @Login
+    @Login
     @ApiOperation(value = "新增或者更新地址——何仁杰",notes = "新增或者更新地址")
     @RequestMapping(value = "/saveUpdate",method = RequestMethod.POST)
     public RestMessage saveOrUpdate(@ModelAttribute AddressInfo addressInfo){
@@ -125,7 +149,7 @@ public class UserController {
     }
 
 
-//    @Login
+    @Login
     @ApiOperation(value = "删除地址——何仁杰",notes = "删除地址接口")
     @ApiImplicitParams({@ApiImplicitParam(name = "addressId",value = "地址ID",dataType = "String",required = true)})
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
@@ -133,7 +157,7 @@ public class UserController {
         return addressService.delete(addressId);
     }
 
-    //    @Login
+    @Login
     @ApiOperation(value = "设置默认地址——何仁杰")
     @ApiImplicitParams({@ApiImplicitParam(name = "id",value = "地址id",dataType = "String",required = true)})
     @RequestMapping(value = "/defaultAddress",method = RequestMethod.POST)

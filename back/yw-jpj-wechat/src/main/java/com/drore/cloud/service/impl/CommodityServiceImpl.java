@@ -55,13 +55,11 @@ public class CommodityServiceImpl implements CommodityService {
 //            return rm;
         }
         //判断用户是否收藏过
-//        MemberInfo memberInfo = (MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
-        String user_id = "6b5e8fcc07c54e33918f434aff5d3376";
-//        if(memberInfo != null){
+        MemberInfo memberInfo = (MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
+        if(memberInfo != null){
             //查询用户收藏表
             Map<String,Object> term2 = new HashMap<String,Object>();
-//            term2.put("user_id",memberInfo.getId());
-            term2.put("user_id",user_id);
+            term2.put("user_id",memberInfo.getId());
             term2.put("commodity_id",commodityId);
             Map CollectionMap = run.queryFirstByRName("user_collection",term2);
             if(CollectionMap != null && CollectionMap.size() > 0){
@@ -71,13 +69,17 @@ public class CommodityServiceImpl implements CommodityService {
                 //未收藏
                 commodityInfo.put("is_collection","N");
             }
-//        }
+        }
+        //追加商铺信息
+        data.put("store_info",run.queryOne("store_info",commodityInfo.get("store_id").toString()));
         //追加商品图集信息
         RequestExample req = SortUtils.sort("create_time","asc",100,1);
         req.create().getMust().add(req.createParam().addTerm("table_name","commodity_info").addTerm("table_pk",commodityId));
         commodityInfo.put("cms_material_info",run.queryListByExample("image_info",req));
 
         data.put("commodity_info",commodityInfo);
+
+
 
         rm.setSuccess(true);
         rm.setData(data);

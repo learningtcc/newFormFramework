@@ -25,7 +25,7 @@ public class ThemeActivitiesServiceImpl implements ThemeActivitiesService{
 
         StringBuffer sql = new StringBuffer("select * from theme_activities where is_deleted='N' and is_using='Y' and is_release='Y'");
         if (type != null && !"".equals(type)){
-            sql.append(" and type="+type);
+            sql.append(" and type= '"+type+"'");
         }
         if (keyword != null && !"".equals(keyword)){
             sql.append(" and title like '%"+keyword+"%'");

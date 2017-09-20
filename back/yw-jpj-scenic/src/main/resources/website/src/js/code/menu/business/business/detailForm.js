@@ -4,152 +4,248 @@ import WindowPanel from 'component/windowPanel';
 export default function detailForm(opt){
     var fields=[
         {
-            column:[
-               {
-                    label:'商家名称',
+            column: [
+                {
+                    label: '店铺状态',
+                    name: 'isRelease',
+                    type: 'radio',
                     readonly: true,
-                    name:'name',
-                    validator:{
-                        type:['validateLength'],
-                        validateRule:{
-                            min:1,
-                            max:50
+                    option: [
+                        {
+                            html: '发布',
+                            value: 'Y'
+                        },
+                        {
+                            html: '暂不发布',
+                            value: 'N'
+                        }
+                    ]
+                },
+                {
+                    label: '店铺名称',
+                    name: 'name',
+                    readonly: true,
+
+                },
+                {
+                    label: '店铺类型',
+                    name: 'type',
+                    readonly: true,
+
+                }
+            ],
+            extraClass: {
+                boxDiv: ['col-sm-4']
+            }
+        },
+        {
+            column: [
+                {
+                    label: '店铺图片',
+                    name: '',
+                    type: 'img',
+                    readonly: true,
+
+                },
+                {
+                    label: '面积',
+                    name: 'area',
+                    readonly: true,
+
+                },
+                {
+                    label: '运费',
+                    name: 'fee',
+                    readonly: true,
+
+                }
+            ],
+            extraClass: {
+                boxDiv: ['col-sm-4']
+            }
+        },
+        {
+            column: [
+                {
+                    label: '客服电话',
+                    name: 'serviceTel',
+                    readonly: true,
+
+                },
+                {
+                    label: '联系人姓名',
+                    name: 'contactPerson',
+                    readonly: true,
+
+                },
+                {
+                    label: '联系人电话',
+                    name: 'contactPhone',
+                    readonly: true,
+
+                }
+            ],
+            extraClass: {
+                boxDiv: ['col-sm-4']
+            }
+        },
+        {
+            column: [
+                {
+                    label: '地址',
+                    name: 'address',
+                    readonly: true,
+
+                },
+                {
+                    label: '地址经度',
+                    name: 'longitude',
+                    readonly: true,
+                    events: {
+                        blur: function (opt) {
+                            let longitude = $(opt.component).find('input[name="longitude"]').val() ? $(opt.component).find('input[name="longitude"]').val() : 116.404
+                            let latitude = $(opt.component).find('input[name="dimension"]').val() ? $(opt.component).find('input[name="dimension"]').val() : 39.915
+                            opt.this.MAP.clearOverlays()
+                            let point = new opt.this.BMAP.Point(longitude, latitude);
+                            opt.this.MAP.centerAndZoom(point, 16);
+                            let marker = new opt.this.BMAP.Marker(point);
+                            opt.this.MAP.addOverlay(marker);
                         }
                     }
-                }, {
-                    label:'地址',
-                    name:'address',
-                    readonly:true,
-                },{
-                    label:'店铺类型',
-                    name:'type',
-                    readonly:true,
-                }
-            ],
-            extraClass:{
-                boxDiv:['col-sm-4']
-            }
-        },{
-            column:[
+                },
                 {
-                    label:'联系人姓名',
-                    name:'name',
-                    readonly:true,
-                },{
-                    label:'联系人电话',
-                    name:'name',
-                    readonly:true,
-                },{
-                    label:'营业执照',
-                    name:'businessLicenseUrl',
-                    readonly:true,
-                    type:'img'
+                    label: '地址纬度',
+                    name: 'dimension',
+                    readonly: true,
+                    events: {
+                        blur: function (opt) {
+                            let longitude = $(opt.component).find('input[name="longitude"]').val() ? $(opt.component).find('input[name="longitude"]').val() : 116.404
+                            let latitude = $(opt.component).find('input[name="dimension"]').val() ? $(opt.component).find('input[name="dimension"]').val() : 39.915
+                            opt.this.MAP.clearOverlays()
+
+                            let point = new opt.this.BMAP.Point(longitude, latitude);
+                            opt.this.MAP.centerAndZoom(point, 16);
+                            let marker = new opt.this.BMAP.Marker(point);
+                            opt.this.MAP.addOverlay(marker);
+                        }
+                    }
                 }
             ],
-            extraClass:{
-                boxDiv:['col-sm-4']
+            extraClass: {
+                boxDiv: ['col-sm-4']
             }
-        },{
-            column:[
-                {
-                    label:'经度',
-                    name:'longitude',
-                    readonly:true,
-                },{
-                    label:'纬度',
-                    name:'dimension',
-                    readonly:true,
-                }
-            ],
-            extraClass:{
-                boxDiv:['col-sm-4']
-            }
-        },{
+        },
+        {
             column: [
                 {
                     label: '地图',
                     name: '',
-                    readonly: true,
                     type: 'map',
+                    readonly: true,
                     location: {
                         longitude: 'longitude',
-                        latitude: 'latitude'// 地图中心点取得是同一接口中的经纬度字段，此处设置接口经纬度字段至地图
+                        latitude: 'dimension'// 地图中心点取得是同一接口中的经纬度字段，此处设置接口经纬度字段至地图
+                    },
+                    area: {
+                        width: '120%', // 字符串类型
+                        height: '360px'
                     },
                     myEvent (opt) {
+                        $(opt.component).find('input[name="longitude"]').val(opt.e.point.lng)
+                        $(opt.component).find('input[name="dimension"]').val(opt.e.point.lat)
                         // alert(opt.e.point.lng + "," + opt.e.point.lat);
                     },
                     extraClass: {
-                        boxDiv: ['new-col-width'],
-                        label: ['new-label-width'],
-                        inputText: ['bigest-input-width']
-                    }
-                }
-            ],
-            extraClass:{
-                boxDiv:['col-sm-4']
-            }
-        },{
-            column:[
-                {
-                    label:'微信公众号二维码',
-                    name:'weixinUrl',
-                    readonly:true,
-                    type:'img'
-                },{
-                    label:'支付宝微信支付二维码',
-                    name:'alipayUrl',
-                    readonly:true,
-                    type:'img'
-                },
-            ],
-            extraClass:{
-                boxDiv:['col-sm-4']
-            }
-        },{
-            column:[
-                {
-                    label:'银行收款开户行',
-                    name:'bankAddress',
-                    readonly:true,
-                },{
-                    label:'银行卡卡号',
-                    name:'bankCard',
-                    readonly:true,
-                },{
-                    label:'持卡人',
-                    name:'payee',
-                    readonly:true,
-                }
-            ],
-            extraClass:{
-                boxDiv:['col-sm-4']
-            }
-        },{
-            column:[
-                {
-                    label: '店铺图集(450*360)',
-                    name: 'pics',
-                    type: 'multigraph',
-                    imgListWidth: '78%',
-                    readonly: true,
-                    extraClass: {
-                        boxDiv: ['new-col-width'],
-                        label: ['new-label-width'],
-                        inputText: ['bigest-input-width']
+                        boxDiv: ['form-group'],
+                        label: ['col-sm-1', 'control-label'],
+                        inputText: ['col-sm-11']
                     }
                 }
             ]
-        },{
-            column:[
+        },
+        {
+            column: [
                 {
-                    label:'商铺简介',
-                    readonly:true,
-                    name:'remark',
-                    type:'richTextEditor',
-                    extraClass:{
-                        boxDiv:['new-col-width'],
-                        label:['new-label-width'],
-                        inputText:['bigest-input-width']
+                    label: '微信/公众号二维码',
+                    name: 'wxUrl',
+                    type: 'img',
+                    readonly: true,
+
+                },
+                {
+                    label: '收款二维码(微信)',
+                    name: 'weixinUrl',
+                    type: 'img',
+                    readonly: true,
+
+                },
+                {
+                    label: '收款二维码(支付宝)',
+                    name: 'alipayUrl',
+                    type: 'img',
+                    readonly: true,
+
+                }
+            ],
+            extraClass: {
+                boxDiv: ['col-sm-4']
+            }
+        },
+        {
+            column: [
+                {
+                    label: '银行收款',
+                    name: 'bankAddress',
+                    readonly: true,
+
+                },
+                {
+                    label: '银行卡号',
+                    name: 'bankCard',
+                    readonly: true,
+
+                },
+                {
+                    label: '持卡人',
+                    name: 'payee',
+                    readonly: true,
+
+                }
+            ],
+            extraClass: {
+                boxDiv: ['col-sm-4']
+            }
+        },
+        {
+            column: [
+                {
+                    label: '店铺图集',
+                    name: 'pics',
+                    type: 'multigraph',
+                    readonly: true,
+                    extraClass: {
+                        boxDiv: ['form-group'],
+                        label: ['col-sm-1', 'control-label'],
+                        inputText: ['col-sm-11']
+                    }
+                }
+            ]
+        },
+        {
+            column: [
+                {
+                    label: '店铺介绍',
+                    name: 'description',
+                    type: 'richTextEditor',
+                    readonly: true,
+                    area: {
+                        width: '122%', // 字符串类型
+                        height: '360px'
+                    },
+                    extraClass: {
+                        boxDiv: ['form-group'],
+                        label: ['col-sm-1', 'control-label'],
+                        inputText: ['col-sm-11']
                     }
                 }
             ]

@@ -43,6 +43,13 @@ public class CommodityInfo extends SystemModel{
     @SerializedName("type_id")
     private String typeId;
     /**
+     * 主图
+     */
+    @NotBlank
+    @Length(min=1, max=200)
+    @SerializedName("theme_pic")
+    private String themePic;
+    /**
      * 临时字段 中文显示
      */
     @Expose(serialize = false)
@@ -114,6 +121,13 @@ public class CommodityInfo extends SystemModel{
     @Expose(serialize=false)
     private List<String> pics;
 
+    public String getThemePic() {
+        return themePic;
+    }
+
+    public void setThemePic(String themePic) {
+        this.themePic = themePic;
+    }
 
     public double getPrice() {
         return price;

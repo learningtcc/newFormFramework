@@ -507,7 +507,7 @@ class FormPanel extends Panel {
       }
       if (this.data && this.data[fields.name]) {
         $(this[fieldSelect]).val(this.data[fields.name])
-        // this[fieldSelect].selectValue = this.data[fields.name]
+        this[fieldSelect].selectValue = this.data[fields.name]
       }
       if (fields.readonly === true) {
         this[fieldSelect].setAttribute('disabled', true)

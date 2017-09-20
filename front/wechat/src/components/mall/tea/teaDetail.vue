@@ -1,9 +1,7 @@
 <template>
     <div class="teaDetail">
         <!-- <img src="../../../assets/img/temp/shopBan.png"> -->
-        <div class="teaIntro">
-            {{detail.description}}
-        </div>
+        <div class="teaIntro" v-html="detail.description"></div>
     </div>
 </template>
 

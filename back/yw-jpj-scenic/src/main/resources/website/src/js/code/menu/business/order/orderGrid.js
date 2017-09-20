@@ -71,6 +71,15 @@ export default function orderGrid(opt){
         },{
             text:'订单状态',
             name:'orderStatus',
+            data:{
+                HasCancel:'已取消',
+                NoPay:'待付款',
+                HasPay:'已付款',
+                NoReceive:'待收货',
+                Received:'已收货',
+                Cancel:'订单过期',
+                Finished:'交易完成'
+            }
         },{
             text:'支付时间',
             name:'payTime',

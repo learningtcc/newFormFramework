@@ -309,7 +309,10 @@
           },
           submit(){//提交订单
             var result = {error:false, msg:""};
-            testEmpty(this.addressList, result, '地址收货地址不能为空');
+            if(this.receiveType.realTab == 0){
+              testEmpty(this.addressList, result, '地址收货地址不能为空');
+            }
+            
             if(result.error){
               weui.topTips(result.msg,1000);//提示出错
               return;

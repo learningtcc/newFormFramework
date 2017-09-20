@@ -42,12 +42,12 @@ export default function salesNew (opt) {
           label: '优惠开始时间',
           name: 'startTime',
           required: true,
-          type: 'date'
+          type: 'time'
         }, {
           label: '结束时间',
           name: 'endTime',
           required: true,
-          type: 'date'
+          type: 'time'
         }
       ]
     },

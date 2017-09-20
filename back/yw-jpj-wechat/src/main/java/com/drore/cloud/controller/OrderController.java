@@ -1,31 +1,38 @@
 package com.drore.cloud.controller;
 
 import com.drore.cloud.constant.ConstantEnum;
+import com.drore.cloud.constant.LocalConstant;
 import com.drore.cloud.exception.MacroApiException;
+import com.drore.cloud.model.MemberInfo;
 import com.drore.cloud.model.OrderDetail;
 import com.drore.cloud.model.OrderInfo;
 import com.drore.cloud.sdk.client.CloudQueryRunner;
+import com.drore.cloud.sdk.common.ThreadLocalHolder;
+import com.drore.cloud.sdk.common.annotation.Login;
 import com.drore.cloud.sdk.common.resp.RestMessage;
 import com.drore.cloud.sdk.common.util.DateUtil;
+import com.drore.cloud.sdk.common.util.GsonUtil;
 import com.drore.cloud.sdk.common.util.RandomKit;
 import com.drore.cloud.service.OrderService;
 import com.drore.cloud.util.CouponUtil;
 import com.drore.cloud.vo.OrderVo;
 import com.drore.cloud.vo.TotalVo;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by 仁杰 on 2017/9/6
@@ -44,15 +51,28 @@ public class OrderController {
     @PostMapping("/get_total")
     public RestMessage getTotal(@Valid@ModelAttribute TotalVo vo){
         RestMessage rm=new RestMessage();
-        //获取商品信息
-        Map<String, Object> commodity_info = run.queryOne("commodity_info", vo.getCommodity_id());
-        if(commodity_info.size()==0){
-            throw new MacroApiException("无法获取商品信息，请检查商品id");
+        //遍历商品信息
+        BigDecimal total = new BigDecimal("0.0");
+        JsonArray commodityList = new JsonParser().parse(vo.getCommodity_info()).getAsJsonArray();
+        for (JsonElement commodityEle : commodityList){
+            JsonObject commodityInfo = commodityEle.getAsJsonObject();
+            String commodity_id = GsonUtil.toStringValue(commodityInfo.get("commodity_id"));    //商品id
+            String commodity_num = GsonUtil.toStringValue(commodityInfo.get("commodity_num"));  //商品数量
+            if(StringUtils.isNotBlank(commodity_id) && StringUtils.isNotBlank(commodity_num)){
+                //计算商品打折前总价
+                Map<String,Object> commodity = run.queryOne("commodity_info",commodity_id);
+                if(commodity == null || commodity.size()==0){
+                    throw new MacroApiException("无法获取商品信息，请检查商品id");
+                }
+                BigDecimal de_price = new BigDecimal(Objects.toString(commodity.get("price")));
+                total = total.add(de_price.multiply(new BigDecimal(commodity_num)));
+            }else{
+                rm.setSuccess(false);
+                rm.setMessage("参数异常,商品ID和数量不能为空");
+                return rm;
+            }
         }
-        //获取商品总价
-        String price = Objects.toString(commodity_info.get("price"));
-        BigDecimal de_price = new BigDecimal(price);
-        BigDecimal total = de_price.multiply(new BigDecimal(vo.getBuy_num()));
+
 
         Map<String,Double> result = new HashMap<>();
 
@@ -77,7 +97,7 @@ public class OrderController {
 
 
     //订单填写界面
-    //@Login
+    @Login
     @ApiOperation(value = "创建订单",notes = "创建订单")
     @PostMapping("/create")
     public RestMessage create(@Valid@ModelAttribute OrderVo vo){
@@ -85,8 +105,8 @@ public class OrderController {
         OrderInfo orderInfo = new OrderInfo();
         //到时候session里面取
         //获取用户信息
-        String member_id="6b5e8fcc07c54e33918f434aff5d3376";
-        orderInfo.setMemberId(member_id);
+        MemberInfo memberInfo = (MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
+        orderInfo.setMemberId(memberInfo.getId());
 
         //收货地址信息(member_address)
         if(StringUtils.isNotBlank(vo.getMember_address_id())){
@@ -101,13 +121,16 @@ public class OrderController {
                 orderInfo.setReceiptAdd(Objects.toString(receipt_add));
             }
         }
-        //商品信息()
-        Map<String, Object> commodity_info = run.queryOne("commodity_info", vo.getCommodity_id());
-        //商店信息
-        Map<String, Object> store_info = run.queryOne("store_info", Objects.toString(commodity_info.get("store_id")));
 
+        //多个商品
+
+
+        Map<String, Object> commodity_info = run.queryOne("commodity_info", vo.getCommodity_id());
         BigDecimal price = new BigDecimal(Objects.toString(commodity_info.get("price")));
         BigDecimal total = price.multiply(new BigDecimal(vo.getBuy_num()));
+
+        //商店信息
+        Map<String, Object> store_info = run.queryOne("store_info",vo.getStore_id());
         //订单号
         orderInfo.setOrderNo(RandomKit.genOrderNo(StringUtils.upperCase("P")));
         //商家id

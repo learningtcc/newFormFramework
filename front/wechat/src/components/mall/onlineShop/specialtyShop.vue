@@ -1,5 +1,9 @@
 <template>
     <div class="specialtyShop">
+        <div class="hotBtn">
+            <input type="text" placeholder="输入搜索关键字" class="searchBtn" v-model="name">
+            <span class="search_btn" @click="search">搜索</span>
+        </div>
         <header class="header">
             <div class="banner swiper-container">
                 <div class="swiper-wrapper">
@@ -47,9 +51,16 @@
                 totalPage:1,
                 currentPage:0,
                 banlist:{},
+                name:"",
             }
         },
         methods: {
+          search(){
+            this.currentPage = 0;
+            this.totalPage = 1;
+            this.lists = [];
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+          },
            onInfinite() {//上拉加载
                 //console.log("onInfinite");
                 var self = this;
@@ -57,7 +68,7 @@
                 if(self.currentPage < self.totalPage){
 
                   function load(){
-                    ywData.list({'resource_name':'commodity_info','curpage': self.currentPage + 1,'pagesize':10,typeAll:{'is_deleted':'N'}},function(data){//列表
+                    ywData.list({'resource_name':'commodity_info','curpage': self.currentPage + 1,'pagesize':10,typeAll:{'is_deleted':'N',name:self.name}},function(data){//列表
                          var listData = data.data;
                          self.lists = self.lists.concat(listData);
                          self.currentPage = data.current_page;

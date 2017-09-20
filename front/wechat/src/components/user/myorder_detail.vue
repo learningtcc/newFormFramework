@@ -39,6 +39,9 @@
                     <span class="unit">￥{{item.commodity_price}}</span>
                     <em class="num">x{{item.commodity_amout}}</em>
                   </div>
+                  <div class="bt-btn" v-if="isEvaluateBtnShow()">
+                    <a href="javascript:;" v-if="orderInfo.order_status" @click="orderStatus[orderInfo.order_status].click()" class="btn">{{orderStatus[orderInfo.order_status].btnName}}</a>
+                  </div>
                 </dd>
               </dl>
             </router-link>
@@ -76,9 +79,9 @@
         <div class="fixed_bottom" v-if="isBtnshow()">
           <div class="order_btn" v-if="orderInfo.order_status" @click="orderStatus[orderInfo.order_status].click()">{{orderStatus[orderInfo.order_status].btnName}}</div>
         </div>
-        <div class="fixed_bottom" v-if="isEvaluateBtnShow()">
+        <!-- <div class="fixed_bottom" v-if="isEvaluateBtnShow()">
           <div class="order_btn" v-if="orderInfo.order_status" @click="orderStatus[orderInfo.order_status].click()">{{orderStatus[orderInfo.order_status].btnName}}</div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -226,7 +229,7 @@
                 }]
             });
           },
-          clickEvaluate(){//评价
+          clickEvaluate(){//评价按钮
             this.$router.push({ path: '/myorder_evaluate',query:{id:this.id}});
           }
 

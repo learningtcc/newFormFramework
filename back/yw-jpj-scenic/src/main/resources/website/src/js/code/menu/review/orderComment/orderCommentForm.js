@@ -89,7 +89,9 @@ export default function orderCommentForm(opt) {
 			extraClass: ['layui-layer-btn0'],
 			events: {
 				click: function(opt) {
-					console.log(opt)
+					if ($('select[name="auditStatus"]').val() !== 'AuditFail') {
+						$('input[name="auditExplain"]').attr('validator', true)
+					}
 					if (opt.panel.items['orderCommentForm'].validatesFn({windowBtn: opt.btn})) {
             			var loading = layer.load(1, { shade: [0.1, '#fff'] })
             			console.log($('.' + opt.panel.component.className.split(' ')[0]).find('form').serialize())
@@ -156,7 +158,7 @@ export default function orderCommentForm(opt) {
 					queryUrl: '	/commodityEvaluation/queryById',
 					queryType: 'post',
 					render: (opt) => {
-						if(opt.response.data.auditStatus != 'PendingAudit'){
+						if(opt.response.data.auditStatus == 'Audited' || opt.response.data.auditStatus == 'AuditFail'){
 							$(opt.component).find('select[name="auditStatus"]').attr('disabled', 'disabled')
 							$(opt.component).find('input[name="auditExplain"]').attr('disabled', 'disabled')
 						}

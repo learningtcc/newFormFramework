@@ -54,15 +54,15 @@ export default function leaseForm (opt) {
           	blur: (opt) => {
           		let price = $(opt.component).find('input[name="price"]').val()
           		if(!isNaN(price)){
-          			$(opt.component).find('input[name="dayprice"]').val((price/265).toFixed(2))
+          			$(opt.component).find('input[name="otherPrice"]').val((price/265).toFixed(2))
           		}else{
-          			$(opt.component).find('input[name="dayprice"]').val('')
+          			$(opt.component).find('input[name="otherPrice"]').val('')
           		}
           	}
           }
         }, {
           label: '价格(元/天)',
-          name: 'dayprice',
+          name: 'otherPrice',
           readonly: true
         }
       ],
@@ -178,7 +178,7 @@ export default function leaseForm (opt) {
 //			              if (item.indexOf('field-inputText') > -1 && $('#' + item).attr('type') === 'richTextEditor') {
 //			                richText = '&' + $('#' + item).attr('name') + '=' + $('#' + item).find('[contenteditable="true"]').html()
 //			              }
-//			            })	
+//			            })
             			$.ajax({
 				            url: '/cms/lease/addOrUpdate',
 				            type: 'post',

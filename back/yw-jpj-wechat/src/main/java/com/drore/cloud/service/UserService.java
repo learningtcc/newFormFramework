@@ -51,4 +51,26 @@ public interface UserService {
      * @return
      */
     RestMessage updateUserTel(String tel);
+
+    /**
+     * 我的消息列表
+     * @return
+     */
+    RestMessage getUserMessageList(Integer current_page,Integer page_size);
+
+    /**
+     * 我的消息详情
+     * @param id
+     * @return
+     */
+    RestMessage getUserMessage(String id);
+
+    /**
+     * 删除消息
+     * @param id
+     * @return
+     */
+    RestMessage deleteUserMessage(String id);
+
+
 }

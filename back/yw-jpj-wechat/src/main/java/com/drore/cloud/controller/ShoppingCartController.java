@@ -4,6 +4,8 @@ import com.drore.cloud.model.ShoppingStore;
 import com.drore.cloud.sdk.common.resp.RestMessage;
 import com.drore.cloud.service.ShoppingCartService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ import java.util.Map;
  */
 @Api("购物车")
 @RestController
-@RequestMapping("/shopping_cart")
+@RequestMapping("/wechat/shopping_cart")
 public class ShoppingCartController {
 
     @Autowired
@@ -51,6 +53,9 @@ public class ShoppingCartController {
         return rm;
     }
     @ApiOperation(value = "增加数量",notes = "增加数量")
+    @ApiImplicitParams({@ApiImplicitParam(value = "商家id",name ="store_id" ,dataType ="string",required = true),
+            @ApiImplicitParam(value = "商品id",name ="commodity_id" ,dataType ="string",required = true),
+            @ApiImplicitParam(value = "商品数量",name ="num" ,dataType ="string",required = true)})
     @PostMapping("/add")
     public RestMessage add (@Valid@ModelAttribute ShoppingCart cart){
         RestMessage rm=new RestMessage();
@@ -58,6 +63,9 @@ public class ShoppingCartController {
         return rm;
     }
     @ApiOperation(value = "减少数量",notes = "减少数量")
+    @ApiImplicitParams({@ApiImplicitParam(value = "商家id",name ="store_id" ,dataType ="string",required = true),
+            @ApiImplicitParam(value = "商品id",name ="commodity_id" ,dataType ="string",required = true),
+            @ApiImplicitParam(value = "商品数量",name ="num" ,dataType ="string",required = true)})
     @PostMapping("/subtract")
     public RestMessage subtract (@Valid@ModelAttribute ShoppingCart cart){
         RestMessage rm=new RestMessage();
@@ -65,10 +73,23 @@ public class ShoppingCartController {
         return rm;
     }
     @ApiOperation(value = "直接设置数量",notes = "直接设置数量")
+    @ApiImplicitParams({@ApiImplicitParam(value = "商家id",name ="store_id" ,dataType ="string",required = true),
+            @ApiImplicitParam(value = "商品id",name ="commodity_id" ,dataType ="string",required = true),
+            @ApiImplicitParam(value = "商品数量",name ="num" ,dataType ="string",required = true)})
     @PostMapping("/set")
     public RestMessage set (@Valid@ModelAttribute ShoppingCart cart){
         RestMessage rm=new RestMessage();
         rm.setData(cartService.setGoods(cart));
+        return rm;
+    }
+
+    @ApiOperation(value = "根据商品id清理购物车商品",notes = "清理购物车商品")
+    @ApiImplicitParams({@ApiImplicitParam(value = "商家id",name ="store_id" ,dataType ="string",required = true),
+            @ApiImplicitParam(value = "商品id",name ="commodity_id" ,dataType ="string",required = true)})
+    @PostMapping("/removeCommodity")
+    public RestMessage removeByCommodityId(@ModelAttribute ShoppingCart cart){
+        RestMessage rm = new RestMessage();
+        rm.setData(cartService.removeGoodsByCommodityId(cart));
         return rm;
     }
 

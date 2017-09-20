@@ -154,7 +154,7 @@ export default function interactCommentForm(opt) {
 					queryUrl: '/auditManagement/queryById',
 					queryType: 'get',
 					render: (opt) => {
-						if(opt.response.data.auditStatus != 'PendingAudit'){
+						if(opt.response.data.auditStatus == 'Audited' || opt.response.data.auditStatus == 'AuditFail'){					
 							$(opt.component).find('select[name="auditStatus"]').attr('disabled', 'disabled')
 							$(opt.component).find('input[name="auditExplain"]').attr('disabled', 'disabled')
 						}

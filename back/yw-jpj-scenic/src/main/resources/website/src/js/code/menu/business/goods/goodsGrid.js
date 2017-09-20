@@ -185,7 +185,7 @@ export default function goodsGrid(opt){
                                 send: {
                                     code: 'goods_category'
                                 },
-                                set: 'value'
+                                set: 'id'
                             }
                         }
                     }

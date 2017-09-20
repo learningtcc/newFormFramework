@@ -24,12 +24,10 @@ public class StoreInfo extends SystemModel {
     /**
      * 运费
      */
-    @Length(max = 100)
     private double fee;
     /**
      * 面积
      */
-    @Length(max = 100)
     private double area;
     /**
      * 维度

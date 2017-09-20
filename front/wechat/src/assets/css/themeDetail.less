@@ -19,11 +19,18 @@
 			color: #222;
 			font-size: 0.4rem;
 			font-weight: 600;
+			width: 9rem;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			line-height: 1rem;
 			margin-top: 0.2rem;
+		}
+		.themeIntro{
+			width: 9rem;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow:ellipsis;
 		}
 		.themeTime{
 			margin-top: 0.3rem;
@@ -36,6 +43,10 @@
 			padding-left: 0.49rem;
 			background:url('../img/consult/themeAddress.png') no-repeat left center;
 		 	background-size: 0.28rem 0.4rem;
+		 	width: 8.5rem;
+		 	overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
 		}
 	}
 	.interlayer{
@@ -46,24 +57,29 @@
 	}
 	.activityGoal{
 		padding: 0 0.48rem 0.7rem;
+		position: relative;
+		.tit{
+			height:1.29rem;
+			position: relative;
+		}
 		h3{
 			color: #222;
-			width: 1.6rem;
+			min-width: 1.75rem;
 			font-size: 0.4rem;
 			text-align: center;
 			margin: 0.7rem auto 0.54rem;
 			padding-bottom: 0.25rem;
 			border-bottom: 0.06rem solid #2182f7;
-		}
-		.activity3{
-			width: 2rem;
-		}
-		.activity4{
-			width: 2.5rem;
+			position: absolute;
+			left: 50%;
+			top:0;
+			transform:translate(-50%,0);
+			-webkit-transform:translate(-50%,0);
 		}
 		.activityGoalIntro{
 			color: #777777;
 			font-size: 0.34rem;
+			margin-top: 0.8rem;
 		}
 	}
 }

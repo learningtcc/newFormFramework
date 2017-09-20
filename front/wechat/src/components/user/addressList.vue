@@ -74,7 +74,7 @@
                     //console.log(response.data);
                    
                     if(response.data.success == true){
-                      let record = response.data.data;
+                      let record = response.data;
                       self.currentPage = record.current_page;
                       self.totalPage = record.total_page;
                       self.lists = self.lists.concat(record.data);
@@ -83,6 +83,8 @@
                         self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
                         return;
                       }
+                    } else {
+                      weui.topTips(res.data.message,1000);//提示出错
                     }
                     self.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
                     

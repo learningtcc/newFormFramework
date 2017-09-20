@@ -1,5 +1,9 @@
 <template>
     <div class="guide">
+        <div class="hotBtn">
+            <input type="text" placeholder="输入搜索关键字" class="searchBtn" v-model="name">
+            <span class="search_btn" @click="search">搜索</span>
+        </div>
         <header class="header">
             <div class="banner swiper-container">
                 <div class="swiper-wrapper">
@@ -16,14 +20,16 @@
         </div>
 
         <!--分类和商品筛选-->
-        <div class="guideBg">
-          <ul class="classify">
+        <div class="guideBg" :class="{guideBg1:favorCheck}">
+          <ul class="classify" @click="classifyBtn" :class="{classify1:favorCheck}">
             <li class="active">销量</li>
             <li>人气</li>
-            <li>稀有度</li>
             <li>价格</li>
           </ul>
-          <ul class="shopT">
+          <div class="guideB"></div>
+        </div>
+        <div class="guideBg" :class="{guideBg1:kindCheck}">
+          <ul class="shopT" @click="kindBtn" :class="{shopT1:kindCheck}">
             <li>
               <p>茶具</p>
               <div>
@@ -82,9 +88,21 @@
                 favorCheck:false,
                 kindCheck:false,
                 banlist:{},
+                name:"",
+                tab:[
+                  {"text":"Holidays","value":"销量"},
+                  {"text":"Community","value":"人气"},
+                  {"text":"Culture","value":"价格"}
+                ],
             }
         },
         methods: {
+            search(){
+              this.currentPage = 0;
+              this.totalPage = 1;
+              this.lists = [];
+              this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+            },
             classifyBtn(){
                 this.favorCheck = !this.favorCheck;
             },
@@ -98,7 +116,7 @@
                 if(self.currentPage < self.totalPage){
 
                   function load(){
-                    ywData.list({'resource_name':'commodity_info','curpage': self.currentPage + 1,'pagesize':10,typeAll:{'is_deleted':'N'}},function(data){//列表
+                    ywData.list({'resource_name':'commodity_info','curpage': self.currentPage + 1,'pagesize':10,typeAll:{'is_deleted':'N',name:self.name}},function(data){//列表
                          var listData = data.data;
                          self.lists = self.lists.concat(listData);
                          self.currentPage = data.current_page;
@@ -123,7 +141,7 @@
             },
             getBenner(){
               var self = this;
-              ywData.list({'resource_name':'advertising_info',typeAll:{'table_name':'commodity_info'}},function (data) {
+              ywData.list({'resource_name':'advertising_info',typeAll:{'table_name':'lease_info'}},function (data) {
                   if(data.success){
                       self.banlist = data.data;
                       self.$nextTick(function(){

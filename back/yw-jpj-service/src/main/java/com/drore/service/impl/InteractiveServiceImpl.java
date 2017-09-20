@@ -111,6 +111,7 @@ public class InteractiveServiceImpl implements InteractiveService {
         RequestExample.Criteria rc = requestExample.create();
         RequestExample.Param pa = requestExample.createParam();
         pa.addTerm("interactive_content_fk",contentId);
+        pa.addTerm("audit_status","Audited");
         pa.addTerm("is_deleted","N");
         rc.getMust().add(pa);
         Pagination<InteractiveEvaluation> evaluationPagination = run.queryListByExample(InteractiveEvaluation.class, InteractiveEvaluation.table, requestExample);

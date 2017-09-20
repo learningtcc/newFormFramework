@@ -5,8 +5,10 @@
             <header class="header">
                 <div class="banner swiper-container">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="moreimg in list.advertising_info.data">
-                          <img class="header-banner-img" :src="moreimg.image_url">
+                        <div class="swiper-slide" v-for="moreimg in list.advertising_info.data" @click="advertis(moreimg)">
+                            <!-- <a :href="moreimg.link_url"> -->
+                                <img class="header-banner-img" :src="moreimg.image_url">
+                           <!--  </a> -->
                         </div>
                   </div>
                     <div class="swiper-pagination"></div>
@@ -18,7 +20,7 @@
                     <div class="subjectMain">
                         <img :src="list.hot_street_culture_info.image_url">
                         <div class="conSanjiao"><p>热门</p></div>
-                        <p class="activityIn">{{list.hot_street_culture_info.description}}</p>
+                        <p class="activityIn" v-html="list.hot_street_culture_info.description"></p>
                     </div>
                 </router-link>
             </div>
@@ -28,9 +30,7 @@
                     <dt><img :src="lis.image_url"></dt>
                     <dd>
                         <p class="activityName">{{lis.title}}</p>
-                        <p class="activityIntro">
-                            {{lis.description}}
-                        </p>
+                        <p class="activityIntro" v-html="lis.description"></p>
                         <p class="activityTime">{{lis.create_time}}<span>{{lis.clicks}}</span></p>
                     </dd>
                 </dl>
@@ -54,6 +54,12 @@
             }
         },
         methods: {
+            /*advertis(item){
+                var self = this;
+                var link_url = item.link_url;
+                console.log(link_url);
+                window.location=link_url;
+            },*/
             getlist(){
                 var self=this;
                 self.axios.get("/wechat/streetCulture/list",

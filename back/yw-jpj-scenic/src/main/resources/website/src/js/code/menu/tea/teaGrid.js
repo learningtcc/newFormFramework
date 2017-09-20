@@ -11,7 +11,10 @@ export default function teaGrid (opt) {
         click: function (opt) {
           opt.panel.items['teaForm'] = teaForm({
             owner: opt.panel,
-            ownerBtn: opt.panel
+            ownerBtn: opt.panel,
+            data: {
+              user:' '
+            }
           })
         },
         mouseenter: function (opt) {
@@ -53,11 +56,26 @@ export default function teaGrid (opt) {
           layer.close(opt.btn.tips)
         },
         click: function (opt) {
-          opt.panel.items['teaForm'] = teaForm({
-            owner: opt.panel,
-            ownerBtn: opt.panel,
+          $.ajax({
+            url: '/cms/teaCulture/queryPage',
+            type: 'post',
             data: {
-              id: opt.tr.getAttribute('uid')
+              pageSize: 0,
+              pageNo: 1,
+            },
+            success: function (response) {
+              opt.panel.items['teaForm'] = teaForm({
+                owner: opt.panel,
+                ownerBtn: opt.panel,
+                data: {
+                  id: opt.tr.getAttribute('uid'),
+                  user: response.data.root[$(opt.tr).find('td')[0].innerHTML-1].serial
+                }
+              })
+            },
+            error: function (response) {
+              layer.close(loading)
+              layer.alert('错误代码:' + response.status + '，请联系管理员', {title: '错误提示', shadeClose: true})
             }
           })
         }

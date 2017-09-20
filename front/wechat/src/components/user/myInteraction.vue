@@ -3,25 +3,32 @@
         <div class="loading" v-if="ishide"></div>
         <div class="interactionCon" v-if="ishide2" v-for="(list,index) in list">
             <div class="interactionHead">
-                <img :src="list.headImageUrl">
-                <div class="interactionName">
-                    <p class="interactionN">{{list.publisherNickname}}</p>
-                    <p class="interactionTime">{{list.publisherTime}}</p>
-                </div>
+                <router-link :to="{path:'/interactionDetail',query:{id:list.id}}">
+                  <img :src="list.headImageUrl">
+                </router-link>
+                <router-link :to="{path:'/interactionDetail',query:{id:list.id}}">
+                  <div class="interactionName">
+                      <p class="interactionN">{{list.publisherNickname}}</p>
+                      <p class="interactionTime">{{list.publisherTime}}</p>
+                  </div>
+                 </router-link>
                 <p class="delete" @click="delelist(list,index)"></p>
             </div>
+         
             <div class="interactionIntro">
+              <router-link :to="{path:'/interactionDetail',query:{id:list.id}}">
                 <div class="interactionTitle">{{list.interactionTitle}}</div>
                 <div class="interactionC">{{list.interactiveContent}}</div>
+              </router-link>
                 <div>
                     <img v-for="listImg in list.picList" :src="listImg" @click="bigimgs(list)">
                 </div>            
                 <p class="comment">{{list.commentNum}}</p>
             </div>
         </div>
-        <!-- <router-link :to="{path:'/interactionRelease',query:{}}">
+        <router-link :to="{path:'/myInteractionR',query:{}}">
             <div class="posted"></div>
-        </router-link> -->
+        </router-link>
     </div>
 </template>
 

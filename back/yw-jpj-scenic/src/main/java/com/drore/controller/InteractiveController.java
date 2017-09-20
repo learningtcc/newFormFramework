@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.drore.cloud.sdk.common.resp.RestMessage;
 import com.drore.model.InteractiveContent;
 import com.drore.model.InteractiveTheme;
+import com.drore.model.ThemeActivities;
 import com.drore.service.InteractiveService;
 import com.drore.util.JSONObjResult;
 import com.drore.util.PageUtil;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by zhangh on 2017/9/1 0001.
@@ -46,6 +48,13 @@ public class InteractiveController {
         log.info("新增互动主题");
         RestMessage restMessage = null;
         try {
+            PageUtil interactiveThemeList = interactiveService.getInteractiveThemeList(Integer.MAX_VALUE, 1);
+            List<InteractiveTheme> root = (List<InteractiveTheme>) interactiveThemeList.getRoot();
+            for(InteractiveTheme theme : root){
+                if(StringUtils.equals(theme.getNumber(),interactiveTheme.getNumber())) {
+                    return JSONObjResult.toJSONObj("当前序号已存在！");
+                }
+            }
             restMessage = interactiveService.saveInteractiveTheme(interactiveTheme);
             if(restMessage.isSuccess()){
                 restMessage.setMessage("保存成功");

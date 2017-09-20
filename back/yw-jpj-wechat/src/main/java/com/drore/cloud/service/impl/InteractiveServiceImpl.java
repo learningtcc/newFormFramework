@@ -75,21 +75,16 @@ public class InteractiveServiceImpl implements InteractiveService {
     public RestMessage getInteractiveContentListByPublisher(Integer page_size, Integer current_page) {
         RestMessage restMessage = new RestMessage();
         MemberInfo sessionMemberInfo = (MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
-        //测试id
-        String publisherId= "58b9a959ecef4a22a666b067eb8c6113";
-        if(sessionMemberInfo != null){
-            publisherId = sessionMemberInfo.getId();
-        }
         RequestExample requestExample=new RequestExample(page_size,current_page);
         requestExample.addSort("create_time","desc");
         RequestExample.Criteria rc = requestExample.create();
         RequestExample.Param pa = requestExample.createParam();
-        pa.addTerm("publisher",publisherId);
+        pa.addTerm("publisher",sessionMemberInfo.getId());
         pa.addTerm("is_deleted","N");
         rc.getMust().add(pa);
         Pagination<InteractiveContent> contentPagination = run.queryListByExample(InteractiveContent.class, InteractiveContent.table, requestExample);
         //获取图片
-        MemberInfo memberInfo = run.queryOne(MemberInfo.class, MemberInfo.table, publisherId);
+        MemberInfo memberInfo = run.queryOne(MemberInfo.class, MemberInfo.table, sessionMemberInfo.getId());
         for(InteractiveContent content : contentPagination.getData()){
             List<String> pics = imageInfoService.findPics(InteractiveContent.table, content.getId());
             content.setPicList(pics);

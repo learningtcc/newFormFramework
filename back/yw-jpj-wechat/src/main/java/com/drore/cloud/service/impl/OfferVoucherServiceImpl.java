@@ -1,6 +1,9 @@
 package com.drore.cloud.service.impl;
 
+import com.drore.cloud.constant.LocalConstant;
+import com.drore.cloud.model.MemberInfo;
 import com.drore.cloud.sdk.client.CloudQueryRunner;
+import com.drore.cloud.sdk.common.ThreadLocalHolder;
 import com.drore.cloud.sdk.common.resp.RestMessage;
 import com.drore.cloud.sdk.domain.Pagination;
 import com.drore.cloud.service.OfferVoucherService;
@@ -33,6 +36,11 @@ public class OfferVoucherServiceImpl implements OfferVoucherService{
     public RestMessage detail(String storeId) {
 
         String user_id = "6b5e8fcc07c54e33918f434aff5d3376";
+        //获取用户信息
+        MemberInfo memberInfo = (MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
+        if(memberInfo != null){
+            user_id = memberInfo.getId();
+        }
 
         RestMessage restMessage = new RestMessage();
         Map store_info = run.queryFirstByRName("store_info", ImmutableMap.of("id", storeId));

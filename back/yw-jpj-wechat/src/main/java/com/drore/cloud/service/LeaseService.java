@@ -7,7 +7,7 @@ import com.drore.cloud.sdk.common.resp.RestMessage;
  */
 public interface LeaseService {
 
-    public RestMessage list(Integer page_size,Integer current_page,String condition, String sort);
+    RestMessage list(Integer page_size,Integer current_page,String condition, String sort);
 
-    public RestMessage detail(String id);
+    RestMessage detail(String id);
 }

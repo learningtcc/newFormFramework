@@ -47,11 +47,7 @@ export default function commentForm(opt){
                 {
                     label:'审核状态',
                     name:'auditStatus',
-                    readonly:true,
-                    data:{
-                        Y:'已审核',
-                        N:'未审核'
-                    }
+                    readonly:true
                 }
             ],
             extraClass:{
@@ -86,7 +82,19 @@ export default function commentForm(opt){
                     data:opt.data,
                     fields:fields,
                     queryUrl:'/commodityEvaluation/queryById',
-                    queryType:'post'
+                    queryType:'post',
+                    render: opt => {
+                        let  temp_auditStatus = '';
+                        if($(opt.component).find('input[name="auditStatus"]').val() == 'PendingAudit'){
+                            temp_auditStatus = '待审核';
+                        }else if($(opt.component).find('input[name="auditStatus"]').val() == 'AuditFail'){
+                            temp_auditStatus = '审核未通过';
+                        }else {
+                            temp_auditStatus = '审核通过';
+                        }
+                        $(opt.component).find('input[name="auditStatus"]').val(temp_auditStatus);
+
+                    }
                 }
             })
         ]

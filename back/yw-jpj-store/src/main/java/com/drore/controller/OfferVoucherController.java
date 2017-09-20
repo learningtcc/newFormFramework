@@ -25,7 +25,7 @@ import javax.validation.Valid;
 /**
  * Created by zhangh on 2017/09/04 0001.
  */
-@Api(value = "优惠活动")
+@Api(value = "优惠活动-张豪")
 @RestController
 @Controller
 @RequestMapping("/offerVoucher/")

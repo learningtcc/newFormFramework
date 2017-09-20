@@ -12,7 +12,7 @@
               <li>
                 <div class="tit">手机号</div>
                 <div class="address-content">
-                  <input type="text" placeholder="请输入手机号" class="txt_common" maxlength="11" v-model="addressInfo.phone">
+                  <input type="tel" placeholder="请输入手机号" class="txt_common" maxlength="11" v-model="addressInfo.phone">
                 </div>
               </li>
             </ul>

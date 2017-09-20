@@ -3,9 +3,9 @@
     <div class="wrapper">
         <router-link :to="{path:'/userInfo',query:{}}" class="u_head">
             <div class="avatar">
-                <img src="../../assets/img/temp/detail_avatar.jpg" alt="">
+                <img :src="detail.headImageUrl" alt="">
             </div>
-            <div class="nickname">无梦</div>
+            <div class="nickname">{{detail.nickName}}</div>
             <span class="arrowR"></span>
         </router-link>
         <div class="userCenter_list">
@@ -55,21 +55,36 @@
 </template>
 
 
-<script> 
+<script>
+    var querystring = require('querystring');
     export default{
         components:{
 
         },
         data(){
             return{
-               
+               detail:{}
             }
         },
         methods: {
            
         },
         mounted(){
-            
+            var loading = weui.loading('加载中', {//loading
+            });
+            this.axios.post('/wechat/user/userInfo', querystring.stringify({//个人信息
+            }))
+            .then(res => {
+                loading.hide();//加载
+                if(res.data.success){
+
+                    this.detail = res.data.data;
+
+                } else {
+                  
+                }
+                
+            })
         }
     }
 </script>

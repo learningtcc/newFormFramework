@@ -3,6 +3,7 @@ import WindowPanel from 'component/windowPanel'
 import layer from 'static/layer/layer'
 import $ from 'jquery'
 export default function salesForm (opt) {
+  let json = opt
   var fields = [
     {
       column: [
@@ -10,16 +11,7 @@ export default function salesForm (opt) {
           label: '优惠类型',
           required: true,
           name: 'type',
-          readonly: true,
-          tagName: 'select',
-          async: {
-            url: '/offerVoucher/getCouponType',
-            type: 'get',
-            data: {
-              send: {},
-              set: 'value'
-            }
-          }
+          readonly: true
         }, {
           label: '使用条件',
           name: 'full',
@@ -94,6 +86,20 @@ export default function salesForm (opt) {
           queryType: 'post',
           render: (opt) => {
             let datas = opt.response.data
+            let typeVal = json.data.user
+            switch (typeVal) {
+              case 'full_cut':
+                $(opt.component).find('input[name="type"]').val('满减')
+                break
+              case 'full_discount':
+                $(opt.component).find('input[name="type"]').val('满折')
+                break
+              case 'discount':
+                $(opt.component).find('input[name="type"]').val('打折')
+                break
+              default:
+                break
+            }
             if (datas) {
               switch (datas.type) {
                 case 'full_cut':

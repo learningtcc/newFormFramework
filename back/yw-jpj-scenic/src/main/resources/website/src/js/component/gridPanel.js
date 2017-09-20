@@ -105,9 +105,19 @@ class GridPanel extends Panel {
       this['errorMessage'].parentNode.removeChild(this['errorMessage'])
     }
     this.loading = true
+    let getPageNo = 0
+    if (opt && opt.delete) {
+      if ($(this.table).find('tbody tr').length <= 1) {
+        getPageNo = this.pageNo - 1
+      } else {
+        getPageNo = this.pageNo
+      }
+    } else {
+      getPageNo = this.pageNo
+    }
     var params = {
       pageSize: this.pageSize,
-      pageNo: this.pageNo
+      pageNo: (getPageNo && (getPageNo > 0)) ? getPageNo : 1
     }
     if (dataJson) {
       for (let i = 0; i < dataJson.length; i++) {
@@ -813,7 +823,7 @@ class GridPanel extends Panel {
     }
     for (let i = 0; i < this.pages.children.length; i++) {
       if (!/a/i.test(this.pages.children[i].children[0].tagName)) return false
-      if (this.pages.children[i].children[0].getAttribute('index') === this.pageNo) {
+      if (parseInt(this.pages.children[i].children[0].getAttribute('index')) === parseInt(this.pageNo)) {
         if (this.pages.children[i].children[0].isNumber) {
           this.pages.children[i].className = 'active'
         } else {

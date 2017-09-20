@@ -33,15 +33,16 @@ public class LeaseController {
             @ApiImplicitParam(name = "id",value = "id",dataType = "string",required = false),
             @ApiImplicitParam(name = "title",value = "标题",dataType = "string",required = true),
             @ApiImplicitParam(name = "type",value = "类型",dataType = "string",required = true),
-            @ApiImplicitParam(name = "contact_tel",value = "联系方式",dataType = "string",required = true),
-            @ApiImplicitParam(name = "imgUrls",value = "图片url集合(逗号分隔)",dataType = "string",required = true),
+            @ApiImplicitParam(name = "contactTel",value = "联系方式",dataType = "string",required = true),
+            @ApiImplicitParam(name = "themePic",value = "主图",dataType = "string",required = true),
             @ApiImplicitParam(name = "area",value = "面积",dataType = "double",required = true),
-            @ApiImplicitParam(name = "price",value = "价格",dataType = "double",required = true),
+            @ApiImplicitParam(name = "price",value = "价格(万元/年)",dataType = "double",required = true),
             @ApiImplicitParam(name = "address",value = "地址",dataType = "string",required = true),
             @ApiImplicitParam(name = "latitude",value = "纬度",dataType = "string",required = true),
             @ApiImplicitParam(name = "longitude",value = "经度",dataType = "string",required = true),
             @ApiImplicitParam(name = "describes",value = "描述",dataType = "string",required = true),
-            @ApiImplicitParam(name = "pics",value = "图集",dataType = "string",required = true)
+            @ApiImplicitParam(name = "pics",value = "图集",dataType = "string",required = true),
+            @ApiImplicitParam(name = "otherPrice",value = "价格(元/天)",dataType = "string",required = true)
     })
     @PostMapping("/addOrUpdate")
     public JSONObject addLeasing(@Valid LeaseInfo leaseInfo){

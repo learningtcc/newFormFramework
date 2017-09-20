@@ -1,7 +1,7 @@
 import { setConfig } from 'common/commonClass';
 import WindowPanel from 'component/windowPanel';
 
-export default function adForm(opt){
+export default function goodsForm(opt){
     var temp_json = opt;
     var fields=[
         {
@@ -11,16 +11,11 @@ export default function adForm(opt){
                     readonly:true,
                     name:'name'
                 },{
-                    label:'状态',
-                    name:'status',
-                    readonly:true,
-                },
-                // ,{
-                //     label:'广告图',
-                //     name:'pic',
-                //     required:true,
-                //     type:'img'
-                // }
+                    label:'商品主图',
+                    name:'themePic',
+                    required:true,
+                    type:'img'
+                }
             ],
             extraClass:{
                 boxDiv:['col-sm-4']
@@ -47,6 +42,10 @@ export default function adForm(opt){
                     name:'price',
                     readonly:true
                 },{
+                    label:'价格单位',
+                    name:'priceId',
+                    required:true
+                },{
                     label:'商品规格',
                     name:'standard',
                     readonly:true,
@@ -59,7 +58,7 @@ export default function adForm(opt){
             column:[
                 {
                     label:'商品主图',
-                    name:'theme_pic',
+                    name:'themePic',
                     readonly:true,
                     type:'img'
                 },
@@ -74,10 +73,14 @@ export default function adForm(opt){
                     readonly:true,
                     name:'details',
                     type:'richTextEditor',
+                    area: {
+                        width: '122%', // 字符串类型
+                        height: '360px'
+                    },
                     extraClass:{
-                        boxDiv:['new-col-width'],
-                        label:['new-label-width'],
-                        inputText:['bigest-input-width']
+                        boxDiv: ['form-group'],
+                        label: ['col-sm-1', 'control-label'],
+                        inputText: ['col-sm-11']
                     }
                 }
             ]

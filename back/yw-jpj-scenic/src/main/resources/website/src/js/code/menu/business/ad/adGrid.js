@@ -88,7 +88,9 @@ export default function adGrid(opt){
                         success:function(response){
                             if(response.isSuccess){
                                 layer.msg('删除成功');
-                                opt.panel.refresh();
+                                opt.panel.refresh({
+                                  delete: true
+                                });
                             }else{
                                 layer.alert(response.errorMessage,function(){});
                             }
@@ -154,4 +156,3 @@ export default function adGrid(opt){
         }
     }));
 }
-

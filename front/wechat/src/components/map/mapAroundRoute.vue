@@ -12,7 +12,7 @@
         </div>
         <div class="route_bottom">
             <div class="route-location-wrap">
-                <div class="location" @click="getLocation"></div>
+                <div class="location" @click="getLocationAndFocus"></div>
                 <div class="zoom">
                     <ul>
                         <li @click="zoomIn" :class="{unclick:zoomDefault == 19}">+</li>
@@ -25,8 +25,8 @@
                 <!-- bus -->
                 <ul class="weui-flex" v-if="typeActive == 0">
                     <li class="weui-flex__item" v-if="transitOutput.length == 0"><div class="tit">暂无</div></li>
-                    <li class="weui-flex__item" v-for="item in transitOutput">
-                        <div class="tit">公交</div>
+                    <li class="weui-flex__item" v-for="item in typeFilters(transitOutput)">
+                        <div class="tit">{{item.title | busLine}}</div>
                         <div class="time">{{item.duration}}</div>
                         <div class="distance">{{item.distance}}</div>
                     </li>
@@ -34,8 +34,9 @@
                 <!-- taxi -->
                 <ul class="weui-flex" v-if="typeActive == 1">
                     <li class="weui-flex__item" v-if="drivingOutput.length == 0"><div class="tit">暂无</div></li>
-                    <li class="weui-flex__item" v-for="item in drivingOutput">
-                        <div class="tit">较快路线</div>
+                    <li class="weui-flex__item" v-for="(item,index) in drivingOutput">
+                        <div class="tit" v-if="index == 0">{{item.titleA}}</div>
+                        <div class="tit" v-if="index == 1">{{item.titleB}}</div>
                         <div class="time">{{item.duration}}</div>
                         <div class="distance">{{item.distance}}</div>
                     </li>
@@ -51,8 +52,8 @@
             </div>
             <div class="info_about" v-if="isTripModeShow">
                 <div class="top">
-                    <span class="traffic_light">途经红绿灯 23个</span>
-                    <span class="taxi_fare">打车 83元</span>
+                    <!-- <span class="traffic_light">途经红绿灯 23个</span> -->
+                    <span class="taxi_fare" v-if="typeActive == 1">打车 {{taxiFare.totalFare}}元</span>
                 </div>
                 <div class="nav_guide">开始导航</div>
             </div>
@@ -80,6 +81,7 @@
               marker:{},
               geoc:{},
               addComp:{},
+              mk:null,
               typeList:[
                     {name:'公交',active:false,click:this.clickBusInfo},
                     {name:'驾车',active:false,click:this.clickCarInfo},
@@ -93,7 +95,16 @@
                drivingOutput:[],
                walking:{},
                walkingOutput:{},
+               taxiFare:{}
 
+            }
+        },
+        filters:{
+            busLine(val){
+                if(val == undefined){
+                    return '';
+                }
+                return val.split('(')[0];
             }
         },
         methods: {
@@ -113,10 +124,15 @@
                     this.getBusInfo();
                 }
                 //清空清除最近一次检索的驾车结果
-                this.driving.clearResults();
+                if(this.driving.clearResults != undefined){
+                    this.driving.clearResults();
+                }
+                
                 this.typeList[1].active = false;
                 //清空清除最近一次检索的步行结果
-                this.walking.clearResults();
+                if(this.walking.clearResults != undefined){
+                    this.walking.clearResults();
+                }
                 this.typeList[2].active = false;
             },
             clickCarInfo(item,index){//驾车路线
@@ -125,10 +141,14 @@
                     this.getDrivingInfo();
                 }
                 //清空清除最近一次检索的公交结果
-                this.transit.clearResults();
+                if(this.transit.clearResults != undefined){
+                    this.transit.clearResults();
+                }
                 this.typeList[0].active = false;
                 //清空清除最近一次检索的步行结果
-                this.walking.clearResults();
+                if(this.walking.clearResults != undefined){
+                    this.walking.clearResults();
+                }
                 this.typeList[2].active = false;
             },
             clickWalkingInfo(item,index){//步行路线
@@ -137,10 +157,14 @@
                     this.getWalkingInfo();
                 }
                 //清空清除最近一次检索的公交结果
-                this.transit.clearResults();
+                if(this.transit.clearResults != undefined){
+                    this.transit.clearResults();
+                }
                 this.typeList[0].active = false;
                 //清空清除最近一次检索的驾车结果
-                this.driving.clearResults();
+                if(this.driving.clearResults != undefined){
+                    this.driving.clearResults();
+                }
                 this.typeList[1].active = false;
             },
             zoomIn(){//放大
@@ -196,20 +220,43 @@
                     
                 }
             },
-            getLocation(){//定位
+            typeFilters(arr){
+                if(arr == undefined){
+                    return [];
+                }
+                return arr.slice(0,5);
+            },
+            getLocationAndFocus() {
+                var self = this;
+                self.getLocation(function(){
+                    var p = new BMap.Point(self.mylng, self.mylat);
+                    if (!self.mk) {
+                        self.mk = new BMap.Marker(p);
+                        self.map.addOverlay(self.mk);
+                    }
+                   
+                    self.map.panTo(p);
+                });
+            },
+            getLocation(fn){//定位
                 var self = this;
                 this.geolocation.getCurrentPosition(function(r){
                     if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                        var mk = new BMap.Marker(r.point);
-                        self.map.addOverlay(mk);
-                        self.map.panTo(r.point);
-                        self.lng = r.point.lng;
-                        self.lat = r.point.lat;
+                        self.mylng = r.point.lng;
+                        self.mylat = r.point.lat;
+                        fn();
                     }
                     else {
                         alert('failed'+this.getStatus());
                     }        
                 },{enableHighAccuracy: true})
+            },
+            ensureMyPoint(fn){
+                if(this.mylng && this.mylat){
+                    fn();
+                } else {
+                    this.getLocation(fn);
+                }
             },
             busSearchComplete(results){
                 if (this.transit.getStatus() != BMAP_STATUS_SUCCESS){
@@ -219,29 +266,63 @@
                 var planArr = [];
                 for(var i = 0; i < planNum ; i++){
                     var plan = results.getPlan(i);
-                    planArr.push({duration:plan.getDuration(true),distance:plan.getDistance(true)});
+                    var title = plan.getNumLines() > 0 ? plan.getLine(0).title : "";
+                    planArr.push({duration:plan.getDuration(true),distance:plan.getDistance(true),title:title});
                 }
                 this.transitOutput = planArr;
+                console.log(results.getPlan(0).getLine(0));
                 console.log("busNumPlans : " + results.getNumPlans());
             },
-            getBusInfo(){//公交
+            getBusInfo(){
+                this.ensureMyPoint(this.getBusInfoCall);
+            },
+            getBusInfoCall(){//公交
                 var p1 = new BMap.Point(this.lng,this.lat);
                 var p2 = new BMap.Point(this.mylng,this.mylat);
                 this.transit = new BMap.TransitRoute(this.map, {renderOptions: {map: this.map},onSearchComplete: this.busSearchComplete
                 });
-                this.transit.search(p1, p2);
+                this.transit.search(p2, p1);
             },
             drivingSearchComplete(results){//驾车回调
                 if (this.driving.getStatus() != BMAP_STATUS_SUCCESS){
                     return ;
                 }
                 console.log(results);
+                this.taxiFare = results.taxiFare.day;
                 var planNum = parseInt(results.getNumPlans());
                 var planArr = [];
+                var fast;
+                var short;
                 for(var i = 0; i < planNum ; i++){
                     var plan = results.getPlan(i);
-                    planArr.push({duration:plan.getDuration(true),distance:plan.getDistance(true)});
+                    var obj = {duration:plan.getDuration(true)
+                        , distance:plan.getDistance(true)
+                        , durationValue: plan.getDuration(false)
+                        , distanceValue:plan.getDistance(false)
+                    };
+                    if (fast) {
+                        fast = fast.durationValue < obj.durationValue ? fast : obj;
+                    } else {
+                        fast = obj
+                    }
+
+                    if (short) {
+                        short = short.distanceValue < short.distanceValue ? short : obj;
+                    } else {
+                        short = obj;
+                    }
                 }
+
+                if (fast) {
+                    fast.titleA = "较快路线";
+                    planArr.push(fast);
+                }
+
+                if (short) {
+                    short.titleB = "较短路线";
+                    planArr.push(short);
+                }
+
                 this.drivingOutput = planArr;
                 console.log("drivingPlanNum:" + results.getNumPlans());
                 // var drivingOutput = '';
@@ -251,11 +332,14 @@
 
                 
             },
-            getDrivingInfo(){//驾车
+            getDrivingInfo(){
+                this.ensureMyPoint(this.getDrivingInfoCall);
+            },
+            getDrivingInfoCall(){//驾车
                 var p1 = new BMap.Point(this.lng,this.lat);
                 var p2 = new BMap.Point(this.mylng,this.mylat);
                 this.driving = new BMap.DrivingRoute(this.map, {renderOptions:{map: this.map, autoViewport: true},onSearchComplete: this.drivingSearchComplete});
-                this.driving.search(p1, p2);
+                this.driving.search(p2, p1);
             },
             walkingSearchComplete(results){//步行回调
                 if (this.walking.getStatus() != BMAP_STATUS_SUCCESS){
@@ -270,11 +354,14 @@
                 console.log("walkPlanNum : " + results.getNumPlans());
                 
             },
-            getWalkingInfo(){//步行
+            getWalkingInfo(){
+               this.ensureMyPoint(this.getWalkingInfoCall); 
+            },
+            getWalkingInfoCall(){//步行
                 var p1 = new BMap.Point(this.lng,this.lat);
                 var p2 = new BMap.Point(this.mylng,this.mylat);
                 this.walking = new BMap.WalkingRoute(this.map, {renderOptions: {map: this.map, autoViewport: true},onSearchComplete: this.walkingSearchComplete});
-                this.walking.search(p1, p2);
+                this.walking.search(p2, p1);
             }
         },
         mounted(){
@@ -287,7 +374,6 @@
             this.map.enableScrollWheelZoom(true);
             this.theLocation();
             this.geolocation = new BMap.Geolocation();
-            
         }
             
     }

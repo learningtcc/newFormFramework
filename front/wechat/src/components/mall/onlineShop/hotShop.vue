@@ -41,23 +41,25 @@
         },
         methods: {
            search(){
-              this.current_page = 1;
-              var params = {'name':this.name};
-              this.onInfinite(params);
+              this.currentPage = 0;
+              this.totalPage = 1;
+              this.lists = [];
+              this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
             },
-           onInfinite(params) {//上拉加载
+           onInfinite() {//上拉加载
                 //console.log("onInfinite");
                 var self = this;
                
                 if(self.currentPage < self.totalPage){
 
                   function load(){
-                    ywData.list({'resource_name':'store_info','curpage': self.currentPage + 1,'pagesize':10,typeAll:{'is_hot':'Y'}},function(data){//列表
+                    console.log(self.name);
+                    ywData.list({'resource_name':'store_info','curpage': self.currentPage + 1,'pagesize':10,typeAll:{'is_hot':'Y',name:self.name}},function(data){//列表
                          var listData = data.data;
                          self.lists = self.lists.concat(listData);
                          self.currentPage = data.current_page;
                          self.totalPage = data.total_page;
-            
+    
                         if(listData.length > 0){
                          self.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
                         } else {

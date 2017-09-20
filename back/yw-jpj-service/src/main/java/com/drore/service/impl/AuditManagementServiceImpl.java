@@ -17,10 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhangh on 2017/9/4 0001.
@@ -46,6 +43,8 @@ public class AuditManagementServiceImpl implements AuditManagementService {
             throw  new CustomException("未发现查找对象!");
         }
         interactiveEvaluation.setPicList(imageInfoService.findPics(InteractiveEvaluation.table,id));
+        InteractiveContent interactiveContent = run.queryOne(InteractiveContent.class, InteractiveContent.table, interactiveEvaluation.getInteractiveContentFk());
+        interactiveEvaluation.setInteractionTitle(interactiveContent.getInteractionTitle());
         return  interactiveEvaluation;
     }
 
@@ -64,15 +63,17 @@ public class AuditManagementServiceImpl implements AuditManagementService {
         RestMessage restMessage = run.update(InteractiveContent.table,interactiveContent.getId(),immutableMap);
 
         if(restMessage.isSuccess()){
+            InteractiveContent succInteractiveContent = run.queryOne(InteractiveContent.class, InteractiveContent.table, restMessage.getId());
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setTitle("系统消息");
             messageInfo.setIntroduction("您有新的互动审核消息，请点击查看");
-            messageInfo.setContent("亲爱的用户，您于"+interactiveContent.getSubmitTime()+"提交审核的互动未通过审核，请查看");
+            messageInfo.setContent("亲爱的用户，您于"+succInteractiveContent.getSubmitTime()+"提交审核的互动未通过审核，请查看");
             if("Audited".equals(interactiveContent.getAuditStatus())){
-                messageInfo.setContent("亲爱的用户，您于"+interactiveContent.getSubmitTime()+"提交审核的互动已经通过审核，请查看");
+                messageInfo.setContent("亲爱的用户，您于"+succInteractiveContent.getSubmitTime()+"提交审核的互动已经通过审核，请查看");
             }
             messageInfo.setTime(DateUtil.format(new Date(),"yyyy-MM-dd"));
             messageInfo.setIsRead("N");
+            messageInfo.setRecipient(succInteractiveContent.getPublisher());
             messageService.saveMessage(messageInfo);
         }
 
@@ -90,9 +91,20 @@ public class AuditManagementServiceImpl implements AuditManagementService {
         String auditExplain = interactiveEvaluation.getAuditExplain();
         String auditStatus = interactiveEvaluation.getAuditStatus();
         ImmutableMap<String, String> immutableMap =  ImmutableMap.of("audit_explain",auditExplain,"audit_status",
-                auditStatus,"audit_time",auditTime,"auditor",auditor,"audit_name",audit_name);
-
-        return run.update(InteractiveEvaluation.table,interactiveEvaluation.getId(),immutableMap);
+                auditStatus,"audit_time",auditTime,"Auditor",auditor,"audit_name",audit_name);
+        RestMessage restMessage = new RestMessage();
+        restMessage = run.update(InteractiveEvaluation.table,interactiveEvaluation.getId(),immutableMap);
+        if(restMessage.isSuccess()){
+            InteractiveEvaluation interactiveEvaluation1 = run.queryOne(InteractiveEvaluation.class, InteractiveEvaluation.table, restMessage.getId());
+            if("Audited".equals(interactiveEvaluation1.getAuditStatus())){
+                Map termMap = new HashMap();
+                termMap.put("interactive_content_fk",interactiveEvaluation1.getInteractiveContentFk());
+                termMap.put("audit_status","Audited");
+                Pagination<InteractiveEvaluation> interactiveEvaluationPagination = run.queryListByExample(InteractiveEvaluation.class, InteractiveEvaluation.table, termMap, 1, Integer.MAX_VALUE);
+                run.update(InteractiveContent.table,interactiveEvaluation1.getInteractiveContentFk(),ImmutableMap.of("comment_num",interactiveEvaluationPagination.getCount()));
+            }
+        }
+        return restMessage;
     }
 
     @Override
@@ -105,7 +117,7 @@ public class AuditManagementServiceImpl implements AuditManagementService {
         String auditExplain = commodityEvaluation.getAuditExplain();
         String auditStatus = commodityEvaluation.getAuditStatus();
         ImmutableMap<String, String> immutableMap = ImmutableMap.of("audit_explain",auditExplain,"audit_status",
-                auditStatus,"audit_time",auditTime,"auditor",auditor,"audit_name",audit_name);
+                auditStatus,"audit_time",auditTime,"Auditor",auditor,"audit_name",audit_name);
 
         return run.update(CommodityEvaluation.table,commodityEvaluation.getId(),immutableMap);
     }

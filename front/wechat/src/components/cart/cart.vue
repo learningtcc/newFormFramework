@@ -13,76 +13,17 @@
                 <dt class="header">
                     <div class="checkbox active"></div><i></i><router-link :to="{path:''}"><span class="text">义乌小茶铺</span><span class="arrow"></span></router-link>
                 </dt>
-                <dd>
-                    <div class="checkbox active"></div>
+                <dd v-for="item in lists" :key="item.id">
+                    <div class="checkbox" :class="{active:item.checked}" @click="selectProducts(item)"></div>
                     <router-link :to="{path:''}" class="pic">
                         <img src="../../assets/img/temp/details.jpg" alt="">
                     </router-link>
                     <div class="info_rt">
+                        <div class="delete">删除</div>
                         <router-link :to="{path:''}" class="tit">西湖龙井茶西湖龙井茶西湖龙井茶西湖龙井茶</router-link>
                         <div class="price">
                             <em class="single">￥1209</em>
-                            <div class="sub">
-                              <span class="subtract">-</span>
-                              <span class="numberText">1</span>
-                              <span class="adds">+</span>
-                            </div>
-                        </div>
-                    </div>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="header">
-                    <div class="checkbox active"></div><i></i><router-link :to="{path:''}"><span class="text">义乌小茶铺</span><span class="arrow"></span></router-link>
-                </dt>
-                <dd>
-                    <div class="checkbox active"></div>
-                    <router-link :to="{path:''}" class="pic">
-                        <img src="../../assets/img/temp/details.jpg" alt="">
-                    </router-link>
-                    <div class="info_rt">
-                        <router-link :to="{path:''}" class="tit">西湖龙井茶西湖龙井茶西湖龙井茶西湖龙井茶</router-link>
-                        <div class="price">
-                            <em class="single">￥1209</em>
-                            <div class="sub">
-                              <span class="subtract">-</span>
-                              <span class="numberText">1</span>
-                              <span class="adds">+</span>
-                            </div>
-                        </div>
-                    </div>
-                </dd>
-                <dd>
-                    <div class="checkbox"></div>
-                    <router-link :to="{path:''}" class="pic">
-                        <img src="../../assets/img/temp/details.jpg" alt="">
-                    </router-link>
-                    <div class="info_rt">
-                        <router-link :to="{path:''}" class="tit">西湖龙井茶西湖龙井茶西湖龙井茶西湖龙井茶</router-link>
-                        <div class="price">
-                            <em class="single">￥1209</em>
-                            <div class="sub">
-                              <span class="subtract">-</span>
-                              <span class="numberText">1</span>
-                              <span class="adds">+</span>
-                            </div>
-                        </div>
-                    </div>
-                </dd>
-                <dd>
-                    <div class="checkbox"></div>
-                    <router-link :to="{path:''}" class="pic">
-                        <img src="../../assets/img/temp/details.jpg" alt="">
-                    </router-link>
-                    <div class="info_rt">
-                        <router-link :to="{path:''}" class="tit">西湖龙井茶西湖龙井茶西湖龙井茶西湖龙井茶</router-link>
-                        <div class="price">
-                            <em class="single">￥1209</em>
-                            <div class="sub">
-                              <span class="subtract">-</span>
-                              <span class="numberText">1</span>
-                              <span class="adds">+</span>
-                            </div>
+                            <cartcontrol :tea="item"></cartcontrol>
                         </div>
                     </div>
                 </dd>
@@ -98,21 +39,49 @@
 </template>
 
 
-<script> 
+<script>
+    var querystring = require('querystring');
+    import cartcontrol from './cartcontrol'
     export default{
         components:{
-
+            cartcontrol
         },
         data(){
             return{
-               
+               lists:[
+                    {id:"123", num:2},
+                    {id:"12356", num:1},
+               ],
+               cartLists:[
+                    {}
+               ]
             }
         },
         methods: {
-           
+           selectProducts(item){
+                if(typeof(item.checked) == undefined){
+                    this.$set(item,'checked',true);
+                } else {
+                    this.$set(item,'checked', !item.checked);
+                    console.log(item.checked);
+                }
+           }
         },
         mounted(){
-            
+            var loading = weui.loading('加载中', {});
+            this.axios.post('/wechat/shopping_cart/list', querystring.stringify({//购物车列表
+                
+            }))
+            .then(res => {
+                loading.hide();//加载
+                if(res.data.success){
+
+
+                } else {
+                  
+                }
+                
+            })
         }
     }
 </script>

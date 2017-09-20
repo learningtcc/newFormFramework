@@ -39,14 +39,13 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     private CloudQueryRunner run;
 
-    private static String user_id = "6b5e8fcc07c54e33918f434aff5d3376"; //用户id（测试用）
+//    private static String user_id = "6b5e8fcc07c54e33918f434aff5d3376"; //用户id（测试用）
 
     @Override
     public RestMessage save(AddressInfo addressInfo) {
         RestMessage restMessage=null;
-//        MemberInfo memberInfo=(MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
-//        addressInfo.setMemberId(memberInfo.getId());
-        addressInfo.setMemberId(user_id);
+        MemberInfo memberInfo=(MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
+        addressInfo.setMemberId(memberInfo.getId());
         //判断是否是默认地址
         if (StringUtils.equalsIgnoreCase(addressInfo.getIsDefault(), ConstantEnum.ToggleEnum.Y.name())){
             //新增并设置为默认地址
@@ -81,9 +80,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Pagination<AddressInfo> findMyAddress(int current_page, int page_size) {
 //        MemberInfo memberInfo=(MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
+        String user_id = "58b9a959ecef4a22a666b067eb8c6113";
         RequestExample req=new RequestExample(page_size,current_page);
         RequestExample.Criteria ct = req.create();
-//        ct.getMust().add(req.createParam().addTerm("user_id", memberInfo.getId()));
+//        ct.getMust().add(req.createParam().addTerm("member_id", memberInfo.getId()));
         ct.getMust().add(req.createParam().addTerm("member_id", user_id));
         HashMap map=new HashMap();
         map.put("is_default","desc");
@@ -112,12 +112,11 @@ public class AddressServiceImpl implements AddressService {
         RestMessage rm = null;
 
         //获取用户信息
-
-        String user_id = "6b5e8fcc07c54e33918f434aff5d3376";
+        MemberInfo memberInfo = (MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
 
         Map<String,Object> term = new HashMap<String,Object>();
         term.put("is_default","Y");
-        term.put("member_id",user_id);
+        term.put("member_id",memberInfo.getId());
         Map addressInfo = run.queryFirstByRName("member_address",term);
         addressInfo.put("is_default","N");
         term.put("id",id);

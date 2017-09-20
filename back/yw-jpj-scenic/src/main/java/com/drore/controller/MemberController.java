@@ -51,7 +51,7 @@ public class MemberController {
         return JSONObjResult.toJSONObj(memberAddress);
     }
 
-    @ApiOperation(value = "会员详情",notes = "用户详情")
+    @ApiOperation(value = "会员详情-张豪",notes = "用户详情")
     @ApiImplicitParam(name = "memberId",value = "会员主键",dataType = "String",required = true)
     @PostMapping("/getMember")
     @ResponseBody

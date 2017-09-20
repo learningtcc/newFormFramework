@@ -15,8 +15,7 @@
         <p class="interlayer"></p>
         <div class="activitySurvey">
             <h4>展会概况</h4>
-            <div class="activityIntro">
-            {{detail.description}}
+            <div class="activityIntro" v-html="detail.description">
                 <!-- <p>第12届中国（义乌）文化产品交易会，于4月27日至30日在义乌国际博览中心举行。设标准展位3251个，展览面积6万平方米。</p>
                 <p>第12届中国（义乌）文化产品交易会，于4月27日至30日在义乌国际博览中心举行。设标准展位3251个，展览面积6万平方米。</p>
                 <img src="../../assets/img/temp/activity1.png"> -->

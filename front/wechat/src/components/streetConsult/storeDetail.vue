@@ -32,7 +32,7 @@
                         </dd>
                     </dl>
                     <div class="check_list">
-                        <img src="../../assets/img/consult/code.jpg">
+                        <img :src="detail.store_info.weixin_url">
                       <!-- <p class="storeC"></p> -->
                       <p class="shao">扫一扫二维码，加我微信</p>
                     </div>
@@ -74,7 +74,7 @@
                     <i class="icon ico_favor"></i><em class="word">收藏</em><em class="c_word">已收藏</em>
                 </a>
                 <!-- <p class="collectionBtn">收藏</p> -->
-                <router-link :to="{path:'/mapAroundType',query:{}}">
+                <router-link :to="{path:'/mapAroundRoute',query:{lng:detail.store_info.longitude,lat:detail.store_info.dimension,title:detail.store_info.name}}">
                   <p class="relationBtn">前往店铺</p>
                 </router-link>
             </div>

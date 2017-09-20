@@ -62,12 +62,14 @@ public class OrderServiceImpl implements OrderService{
                 ImmutableMap.of("logistics_company", orderInfo.getLogisticsCompany(), "tracking_num",
                         orderInfo.getTrackingNum(),"order_status",CommonEnum.OrderStatusEnum.NO_RECEIVE.getValue()));
         if (restMessage.isSuccess()){
+            OrderInfo succOrderInfo = run.queryOne(OrderInfo.class, OrderInfo.table, restMessage.getId());
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setTitle("系统消息");
             messageInfo.setIntroduction("您有新的订单消息，请点击查看");
-            messageInfo.setContent("亲爱的用户，您有一个订单号为"+orderInfo.getOrderNo()+"的订单商家已发货，请注意查收");
+            messageInfo.setContent("亲爱的用户，您有一个订单号为"+succOrderInfo.getOrderNo()+"的订单商家已发货，请注意查收");
             messageInfo.setTime(DateUtil.format(new Date(),"yyyy-MM-dd"));
             messageInfo.setIsRead("N");
+            messageInfo.setRecipient(succOrderInfo.getMemberId());
             messageService.saveMessage(messageInfo);
             restMessage.setMessage("发货成功");
         }else {
@@ -83,12 +85,14 @@ public class OrderServiceImpl implements OrderService{
                         "order_status",CommonEnum.OrderStatusEnum.HasPay.getValue()));
         if (restMessage.isSuccess()){
             if(restMessage.isSuccess()){
+                OrderInfo succOrderInfo = run.queryOne(OrderInfo.class, OrderInfo.table, restMessage.getId());
                 MessageInfo messageInfo = new MessageInfo();
                 messageInfo.setTitle("系统消息");
                 messageInfo.setIntroduction("您有新的订单消息，请点击查看");
-                messageInfo.setContent("亲爱的用户，您有一个订单号为"+orderInfo.getOrderNo()+"的订单商家已确认收款，等待发货");
+                messageInfo.setContent("亲爱的用户，您有一个订单号为"+succOrderInfo.getOrderNo()+"的订单商家已确认收款，等待发货");
                 messageInfo.setTime(DateUtil.format(new Date(),"yyyy-MM-dd"));
                 messageInfo.setIsRead("N");
+                messageInfo.setRecipient(succOrderInfo.getMemberId());
                 messageService.saveMessage(messageInfo);
             }
             restMessage.setMessage("收款成功");

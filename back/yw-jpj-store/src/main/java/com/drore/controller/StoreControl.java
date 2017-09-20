@@ -43,6 +43,7 @@ public class StoreControl {
             @ApiImplicitParam(name = "bankAddress",value = "银行卡开户地址，0-100",dataType = "string" ),
             @ApiImplicitParam(name = "alipayUrl",value = "支付宝图片，0-200",dataType = "string" ),
             @ApiImplicitParam(name = "weixinUrl",value = "微信图片，0-200",dataType = "string" ),
+            @ApiImplicitParam(name = "wxUrl",value = "微信图片(微信/公众号)，0-200",dataType = "string" ),
             @ApiImplicitParam(name = "businessLicenseUrl",value = "营业执照，0-200",dataType = "string" ),
             @ApiImplicitParam(name = "pics",value = "图集，多个逗号隔开",dataType = "string" )
 

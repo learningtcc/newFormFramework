@@ -50,6 +50,7 @@
             },
             getLocation(){//定位
                 var self = this;
+                this.loading = weui.loading('加载中', {});
                 this.geolocation.getCurrentPosition(function(r){
                     if(this.getStatus() == BMAP_STATUS_SUCCESS){
                         var mk = new BMap.Marker(r.point);
@@ -57,6 +58,7 @@
                         self.map.panTo(r.point);
                         self.lng = r.point.lng;
                         self.lat = r.point.lat;
+                        self.loading.hide();//加载中
                     }
                     else {
                         alert('failed'+this.getStatus());

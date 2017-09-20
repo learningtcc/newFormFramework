@@ -4,6 +4,7 @@ import { setConfig } from 'common/commonClass'
 import WindowPanel from 'component/windowPanel'
 
 export default function teaForm (opt) {
+  let json = opt
   var fields = [
     {
       column: [
@@ -16,7 +17,8 @@ export default function teaForm (opt) {
             label: ['new-label-width'],
             inputText: ['col-sm-6']
           }
-        }, {
+        },
+        {
           label: '排序',
           name: 'serial',
           required: true,
@@ -69,23 +71,60 @@ export default function teaForm (opt) {
         click: function (opt) {
           if (opt.panel.items['teaForm'].validatesFn({windowBtn: opt.btn})) {
             var loading = layer.load(1, { shade: [0.1, '#fff'] })
-            let richText = ''
-            Object.keys(opt.panel.items['teaForm']).map((item, index) => {
-              if (item.indexOf('field-inputText') > -1 && $('#' + item).attr('type') === 'richTextEditor') {
-                richText = '&' + $('#' + item).attr('name') + '=' + $('#' + item).find('[contenteditable="true"]').html()
-              }
-            })
             $.ajax({
-              url: $(opt.panel.component).find('input[name=id]').length ? '/cms/teaCulture/addTeaCulture' : '/cms/teaCulture/addTeaCulture',
+              url: 'cms/teaCulture/queryPage',
               type: 'post',
-              data: $('.' + opt.panel.component.className.split(' ')[0]).find('form').serialize() + richText, // +userType,
               success: function (response) {
-                if (response.isSuccess) {
-                  layer.closeAll()
-                  opt.panel.owner.refresh()
-                } else {
-                  layer.close(loading)
-                  layer.msg(response.errorMessage, function () {})
+                let serialVal = $('.' + opt.panel.component.className.split(' ')[0]).find('form').find('input[name="serial"]').val()
+                if(''+json.data.user === serialVal){
+                  $.ajax({
+                    url: $(opt.panel.component).find('input[name=id]').length ? '/cms/teaCulture/addTeaCulture' : '/cms/teaCulture/addTeaCulture',
+                    type: 'post',
+                    data: $('.' + opt.panel.component.className.split(' ')[0]).find('form').serialize() , // +userType,
+                    success: function (response) {
+                      if (response.isSuccess) {
+                        layer.closeAll()
+                        opt.panel.owner.refresh()
+                      } else {
+                        layer.close(loading)
+                        layer.msg(response.errorMessage, function () {})
+                      }
+                    },
+                    error: function (response) {
+                      layer.close(loading)
+                      layer.alert('错误代码:' + response.status + '，请联系管理员', {title: '错误提示', shadeClose: true})
+                    }
+                  })
+                }else{
+                  let isSerial = true
+                  response.data.root.forEach((t,i)=>{
+                      if(''+t.serial === serialVal){
+                        return isSerial = false
+                      }
+                    console.log(t.serial,'ti',$('.' + opt.panel.component.className.split(' ')[0]).find('form').find('input[name="serial"]').val())
+                  })
+                  if(isSerial){
+                    $.ajax({
+                      url: $(opt.panel.component).find('input[name=id]').length ? '/cms/teaCulture/addTeaCulture' : '/cms/teaCulture/addTeaCulture',
+                      type: 'post',
+                      data: $('.' + opt.panel.component.className.split(' ')[0]).find('form').serialize() , // +userType,
+                      success: function (response) {
+                        if (response.isSuccess) {
+                          layer.closeAll()
+                          opt.panel.owner.refresh()
+                        } else {
+                          layer.close(loading)
+                          layer.msg(response.errorMessage, function () {})
+                        }
+                      },
+                      error: function (response) {
+                        layer.close(loading)
+                        layer.alert('错误代码:' + response.status + '，请联系管理员', {title: '错误提示', shadeClose: true})
+                      }
+                    })
+                  }else{
+                    layer.alert('排序 "'+serialVal+'" 已存在,请重新设置！')
+                  }
                 }
               },
               error: function (response) {

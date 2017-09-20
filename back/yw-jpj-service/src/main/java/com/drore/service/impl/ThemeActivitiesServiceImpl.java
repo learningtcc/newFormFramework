@@ -74,6 +74,15 @@ public class ThemeActivitiesServiceImpl implements ThemeActivitiesService {
 
 	@Override
 	public RestMessage updateThemeActivity(ThemeActivities themeActivities) {
+		//活动类型判断
+		if(CommonEnum.ThemeActivityType.Holidays.getValue().equals(themeActivities.getType())){
+			themeActivities.setTypeName(CommonEnum.ThemeActivityType.Holidays.getName());
+		}else if(CommonEnum.ThemeActivityType.Culture.getValue().equals(themeActivities.getType())){
+			themeActivities.setTypeName(CommonEnum.ThemeActivityType.Culture.getName());
+		}else if(CommonEnum.ThemeActivityType.Community.getValue().equals(themeActivities.getType())){
+			themeActivities.setTypeName(CommonEnum.ThemeActivityType.Community.getName());
+		}
+
 		return run.update(ThemeActivities.table,themeActivities.getId(),themeActivities);
 	}
 
@@ -98,9 +107,9 @@ public class ThemeActivitiesServiceImpl implements ThemeActivitiesService {
 		List<Map> data = pagination.getData();
 		for (int i = 0; i < data.size(); i++) {
 			String id1 = String.valueOf(data.get(i).get("id"));
-			run.update(ThemeActivities.table,id1, ImmutableMap.of("is_top", "N"));
+			run.update(ThemeActivities.table,id1, ImmutableMap.of("is_newest", "N"));
 		}
-		restMessage = run.update(ThemeActivities.table, id, ImmutableMap.of("is_top", "Y"));
+		restMessage = run.update(ThemeActivities.table, id, ImmutableMap.of("is_newest", "Y"));
 		if (restMessage.isSuccess()){
 			restMessage.setMessage("置顶成功");
 		}

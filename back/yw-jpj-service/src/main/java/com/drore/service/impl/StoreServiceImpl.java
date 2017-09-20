@@ -5,7 +5,6 @@ import com.drore.cloud.sdk.common.resp.RestMessage;
 import com.drore.cloud.sdk.domain.Pagination;
 import com.drore.enums.CommonEnum;
 import com.drore.exception.CustomException;
-import com.drore.model.CommodityInfo;
 import com.drore.model.StoreInfo;
 import com.drore.service.ClicksInfoService;
 import com.drore.service.ImageInfoService;
@@ -53,7 +52,7 @@ public class StoreServiceImpl implements StoreService {
         if(storeInfo==null){
             throw  new CustomException("未发现查找对象!");
         }
-        storeInfo.setPics(imageInfoService.findPics(CommodityInfo.table,id));
+        storeInfo.setPics(imageInfoService.findPics(StoreInfo.table,id));
         return  storeInfo;
     }
 
@@ -165,6 +164,7 @@ public class StoreServiceImpl implements StoreService {
         old.setContactPhone(storeInfo.getContactPhone());
         old.setContactPerson(storeInfo.getContactPerson());
         old.setModifier(LoginStoreUserUtil.getUserId());
+        old.setWxUrl(storeInfo.getWxUrl());
 
         RestMessage restMessage  =  run.update(StoreInfo.table,id,old);
         if (!restMessage.isSuccess()) {

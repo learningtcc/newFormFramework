@@ -1,5 +1,6 @@
 package com.drore.cloud.vo;
 
+import com.google.gson.JsonArray;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Range;
 
@@ -19,6 +20,12 @@ public class OrderVo {
     private String receipt_way;
     @ApiModelProperty("会员地址信息id,收货方式为自提 可不传")
     private String member_address_id;
+    @NotNull(message = "商店id不能为空")
+    @ApiModelProperty("商店id")
+    private String store_id;
+//    @NotNull(message = "商品信息不能为空")
+//    @ApiModelProperty("商品信息")
+//    private JsonArray commodity_info;
     @NotNull(message = "商品id不能为空")
     @ApiModelProperty("商品id")
     private String commodity_id;
@@ -44,6 +51,18 @@ public class OrderVo {
         this.member_address_id = member_address_id;
     }
 
+    public String getStore_id() {
+        return store_id;
+    }
+
+    public void setStore_id(String store_id) {
+        this.store_id = store_id;
+    }
+
+    public Integer getBuy_num() {
+        return buy_num;
+    }
+
     public String getCommodity_id() {
         return commodity_id;
     }
@@ -52,13 +71,17 @@ public class OrderVo {
         this.commodity_id = commodity_id;
     }
 
-    public Integer getBuy_num() {
-        return buy_num;
-    }
-
     public void setBuy_num(Integer buy_num) {
         this.buy_num = buy_num;
     }
+
+//    public JsonArray getCommodity_info() {
+//        return commodity_info;
+//    }
+//
+//    public void setCommodity_info(JsonArray commodity_info) {
+//        this.commodity_info = commodity_info;
+//    }
 
     public String getOffer_voucher_id() {
         return offer_voucher_id;

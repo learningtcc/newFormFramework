@@ -8,12 +8,20 @@
                 </li>
             </ul>
         </div>
-        <div class="m_lists" v-for="(type,index) in types" v-show="index == tab">
-            <dl v-for="item in types[index].list" @click="clickToDetail(item)">
-                <dt><img :src="item.commodity_info.theme_pic"></dt>
-                <dd>
+        <div class="m_lists" v-show="index == tab" v-for="(type,index) in types">
+            <dl v-for="item in types[0].list" @click="clickToDetail(item)" :key="item.id" v-show="index == 0">
+                <dt v-if="item.store_info"><img :src="item.store_info.theme_pic"></dt>
+                <dd v-if="item.store_info">
+                    <p class="shopName">{{item.store_info.name}}</p>
+                    <p class="shopTime" v-html="item.store_info.description"></p>
+                    <p class="shopPrice">价格：<span>{{item.store_info.expenditure}}</span> 元起</p>
+                </dd>
+            </dl>
+            <dl v-for="item in types[1].list" @click="clickToDetail(item)" :key="item.id" v-show="index == 1">
+                <dt v-if="item.commodity_info"><img :src="item.commodity_info.theme_pic"></dt>
+                <dd v-if="item.commodity_info">
                     <p class="shopName">{{item.commodity_info.name}}</p>
-                    <p class="shopTime">{{item.commodity_info.name}}</p>
+                    <p class="shopTime">{{item.commodity_info.plucking_time}}</p>
                     <p class="shopPrice">价格：<span>{{item.commodity_info.price}}</span> 元/{{item.commodity_info.price_content}}</p>
                 </dd>
             </dl>
@@ -105,7 +113,7 @@
                 if(item.collection_type == 'Commodity'){
                     this.$router.push({ path: '/productDetail',query:{id:item.commodity_id}});
                 } else {
-                    this.$router.push({ path: '/productDetail',query:{id:item.commodity_id}});
+                    this.$router.push({ path: '/storeDetail',query:{id:item.store_info.id}});
                 }
                 
             },

@@ -125,6 +125,8 @@ public class CommodityServiceImpl implements CommodityService {
 
     @Override
     public RestMessage save(CommodityInfo commodityInfo) {
+        List<String> list = commodityInfo.getPics();
+        commodityInfo.setPics(null);
         if (CommonEnum.YesOrNo.YES.getCode().equals(commodityInfo.getIsShelves())) {//如果是默认新增并上架的
             commodityInfo.setShelvesTime(new Date());//设置上架时间
             commodityInfo.setShelvesId(LoginStoreUserUtil.getUserId());//设置上架人
@@ -138,7 +140,6 @@ public class CommodityServiceImpl implements CommodityService {
             return restMessage;
         }
         String id = restMessage.getId();
-        List<String> list = commodityInfo.getPics();
         if (CollectionUtils.isNotEmpty(list)) {//保存图集
             restMessage = imageInfoService.saveBatch(CommodityInfo.table, id, list);
             if (!restMessage.isSuccess()) {

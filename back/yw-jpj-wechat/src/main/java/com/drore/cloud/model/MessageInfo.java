@@ -1,4 +1,4 @@
-package com.drore.model;
+package com.drore.cloud.model;
 
 import com.drore.cloud.sdk.domain.SystemModel;
 import com.google.gson.annotations.SerializedName;

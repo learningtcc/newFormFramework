@@ -104,6 +104,32 @@ public class CommonEnum {
         }
     }
 
+    public enum ThemeActivityType{
+
+        Holidays("Holidays","节假日活动"),
+        Culture("Culture","风俗文化"),
+        Community("Community","社区治理");
+
+        private String value;
+        private String name;
+        public String getValue() {
+            return value;
+        }
+        public void setValue(String value) {
+            this.value = value;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        private ThemeActivityType(String value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+    }
+
     public enum ActiveState{
 
         NotBegin("NotBegin","未开始"),

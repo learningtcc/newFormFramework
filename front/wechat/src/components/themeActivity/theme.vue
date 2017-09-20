@@ -4,14 +4,13 @@
         <div class="theme" v-if="ishide2">
             <div class="themeSearch">
                 <div class="screen" @click="classifyBtn" :class="{screenA:favorCheck}">分类筛选</div>
-                <input type="text" placeholder="输入搜索关键字" class="searchBtn">
+                <input type="text" placeholder="输入搜索关键字" class="searchBtn" v-model="keyword">
+                <span class="search_btn" @click="search">搜索</span>
             </div>
             <!--分类筛选-->
             <div class="classifyBg" @click="classifyBtn" :class="{classifyBg1:favorCheck1}">
                 <ul>
-                    <li class="active">节假日活动</li>
-                    <li>风俗文化</li>
-                    <li>社区治理</li>
+                    <li v-for = "(item,index) in tab" @click = "tabs(item,index)" :class = "{'active':num==index}">{{item.value}}</li>
                 </ul>
                 <div class="classifyB"></div>
             </div>
@@ -26,7 +25,7 @@
             <div class="themeCon">
                 <p class="themeTime">{{list.newest_theme_activities.act_start_time}} ~ {{list.newest_theme_activities.act_end_time}}</p>
                 <p class="themeName">{{list.newest_theme_activities.title}}</p>
-                <p class="themeIntro">{{list.newest_theme_activities.explains}}</p>
+                <p class="themeIntro" v-html="list.newest_theme_activities.explains"></p>
             </div>
             </router-link>
             <div class="moreActivitiy">
@@ -39,9 +38,7 @@
                     </dt>
                     <dd>
                         <p class="activityName">{{lis.title}}</p>
-                        <p class="activityIntro">
-                            {{lis.explains}}
-                        </p>
+                        <p class="activityIntro" v-html="lis.explains"></p>
                         <p class="activityTime">{{lis.act_start_time}}-{{lis.act_end_time}}</p>
                         <p class="activityLook">{{lis.clicks}}</p>
                     </dd>
@@ -66,23 +63,48 @@
                 favorCheck:false,
                 favorCheck1:false,
                 type:"",
-
+                tab:[
+                  {"text":"Holidays","value":"节假日活动"},
+                  {"text":"Community","value":"社区治理"},
+                  {"text":"Culture","value":"风俗文化"}
+                ],
+                num:-1,
+                keyword:"",
             }
         },
         methods: {
+             tabs(item,index){
+                var self=this;
+                self.currentpage=1;
+                self.ishide=true;
+                self.ishide2=false;
+                self.num=index;
+                self.type = item.text;
+                self.getlist();
+              },
+              search(){
+                this.currentpage = 1;
+                this.pagesize = 5;
+                this.ishide = true;
+                this.ishide2 = false;
+                this.list.theme_activities.data = [];
+                this.keyword = this.keyword;
+                this.getlist();
+              },
             classifyBtn(){
                 this.favorCheck = !this.favorCheck;
                 this.favorCheck1 = !this.favorCheck1;
             },
             getlist(){
                 var self=this;
-                self.axios.get("/wechat/themeActivities/list",
-                    qs.stringify({
+                console.log(self.keyword);
+                console.log(self.type);
+                self.axios.get("/wechat/themeActivities/list",{params:{
                         page_size:self.pagesize,
                         current_page:self.currentpage,
                         type:self.type,
-                    })
-                ).then(function(res){
+                        keyword:self.keyword,
+                    }}).then(function(res){
                     if(res.data.success){
                       self.ishide=false;
                       self.ishide2=true;

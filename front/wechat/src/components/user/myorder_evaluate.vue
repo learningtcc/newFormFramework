@@ -33,6 +33,7 @@
         data(){
             return{
                 id:this.$route.query.id,
+                currentUrl:'',
                 starVal:5,
                 content:'',
                 imgArr:[],
@@ -89,8 +90,8 @@
             uploadImage(uploadQueue){//上传图片
 
                 if(uploadQueue.length == 0){//上传完
-
-                    this.submit();//提交数据
+                    this.uploadMaterial();
+                    
                 } else {
                   var localId = uploadQueue[0];
 
@@ -121,7 +122,10 @@
                 .then(res => {
 
                     if(res.data.success){
-
+                        for(var i = 0; i < response.data.data.length; i++){
+                            this.picList.push(response.data.data[i].url);
+                        }
+                        this.submit();//提交数据
                     }
                     
                 })
@@ -138,7 +142,7 @@
                     'orderId':this.id,
                     'content':this.utf16toEntities(this.content),
                     'points':this.starVal,
-                    'picList':''
+                    'picList':this.picList.join(',')
                 }))
                 .then(res => {
                     loading.hide();//加载完
@@ -158,7 +162,14 @@
             }
         },
         mounted(){
-            
+            var currentUrl = window.location.href;
+            this.currentUrl = currentUrl.split('#')[0];
+            this.axios.post('/macro/weixin/sign', querystring.stringify({
+                'url':this.currentUrl
+            }))
+            .then(res => {
+                wxInit(res.data.data);
+            })
         }
     }
 </script>

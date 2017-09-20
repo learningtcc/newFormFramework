@@ -122,7 +122,9 @@ export default function interactGrid (opt) {
               success: function (response) {
                 if (response.isSuccess) {
                   layer.msg('删除成功')
-                  opt.panel.refresh()
+                  opt.panel.refresh({
+                    delete: true
+                  })
                 } else {
                   layer.alert(response.errorMessage, function () {})
                 }
@@ -147,6 +149,9 @@ export default function interactGrid (opt) {
     }, {
       text: '发布时间',
       name: 'createTime'
+    }, {
+      text: '序列号',
+      name: 'number'
     }, {
       type: 'operations',
       text: '操作',

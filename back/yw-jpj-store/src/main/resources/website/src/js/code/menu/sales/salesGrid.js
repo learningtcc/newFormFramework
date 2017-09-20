@@ -84,7 +84,8 @@ export default function culturalGrid (opt) {
             owner: opt.panel,
             ownerBtn: opt.panel,
             data: {
-              id: opt.tr.getAttribute('uid')
+              id: opt.tr.getAttribute('uid'),
+              user: opt.panel.data[$(opt.tr).find('td')[0].innerHTML-1].type
             }
           })
         }
@@ -212,7 +213,7 @@ export default function culturalGrid (opt) {
         fields: [
           {
             name: 'storeName',
-            text: '优惠商家'// placeholder
+            text: '优惠商家'
           },
           {
             name: 'type',

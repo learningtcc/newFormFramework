@@ -66,6 +66,9 @@ public class LeaseInfo extends SystemModel {
     @SerializedName("is_using")
     private String isUsing;
 
+    @SerializedName("other_price")
+    private String otherPrice;
+
     /**
      *图集 ，临时字段
      */
@@ -83,6 +86,14 @@ public class LeaseInfo extends SystemModel {
 
     @Expose(serialize=false)
     private String typeName;
+
+    public String getOtherPrice() {
+        return otherPrice;
+    }
+
+    public void setOtherPrice(String otherPrice) {
+        this.otherPrice = otherPrice;
+    }
 
     public String getTypeName() {
         return typeName;

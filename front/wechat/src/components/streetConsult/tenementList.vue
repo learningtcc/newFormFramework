@@ -13,15 +13,15 @@
                 </div>
             </header>
             <div class="tenementSort">
-                <p class="priceSort" @click="screenBtn">价格排序</p>
-                <p class="areaSort">面积排序</p>
+                <p class="priceSort" @click="priceBtn">价格排序</p>
+                <p class="areaSort" @click="areaBtn">面积排序</p>
             </div>
             <div class="tenementCon" v-for="lis in list.lease_info.data">
                 <router-link :to="{path:'/tenementDetail',query:{id:lis.id}}">
                     <img :src="lis.theme_pic">
                     <div class="tenDetail">
                         <p class="tenementName">{{lis.title}}</p>
-                        <p class="tenementArea">面积：{{lis.area}}㎡ &nbsp;&nbsp;&nbsp;类型：{{lis.type}}</p>
+                        <p class="tenementArea">面积：{{lis.area}}㎡ &nbsp;&nbsp;&nbsp;类型：{{lis.type | typeFormate}}</p>
                         <p class="tenementPrice">价格：<span>{{lis.price}}</span> 元/年</p>
                     </div>
                 </router-link>
@@ -38,38 +38,59 @@
             return {
                 list:{},
                 currentpage:1,
-                pagesize:5,
+                pagesize:6,
                 ishide:true,
                 ishide2:false,
                 condition:"price",
                 sort:"desc"
             }
         },
+        filters:{
+          typeFormate(val){
+            if(val == undefined){
+              return ''
+            }
+            switch(val)
+            {
+              case 'commercial_complex':
+                return '商业综合体';
+                break;
+              case 'shop_type':
+                return '门店';
+                break;  
+            }
+          }
+        },
         methods: {
-            screenBtn(){
-                 var self=this;
-                 console.log(self.condition);
-                 if(self.sort=='desc'){
-                     self.condition='area';
-                     self.sort="asc";
-                     console.log(self.sort);
-                     self.getlist()
-                 }  else{
-                    self.condition='price';
-                    self.sort="desc";
-                    self.getlist()
-                 }
+            priceBtn(){
+              var self=this;
+              self.condition='price';
+              if (self.sort=="desc") {
+                self.sort="asc"
+              } else {
+                self.sort="desc"
+                }
+              self.getlist()
+            },
+            areaBtn(){
+              var self=this;
+              self.condition='area';
+              if (self.sort=="desc") {
+                self.sort="asc"
+              } else {
+                self.sort="desc"
+              }
+              self.getlist()
             },
             getlist(){
                 var self=this;
-                self.axios.get("/wechat/Lease/list",
-                qs.stringify({
+                console.log(self.currentpage);
+                self.axios.get("/wechat/Lease/list",{params:{
                     page_size:self.pagesize,
                     current_page:self.currentpage,
                     condition:self.condition,
                     sort:self.sort
-                })
-              ).then(function(res){
+                }}).then(function(res){
                 if(res.data.success){
                   self.ishide=false;
                   self.ishide2=true;

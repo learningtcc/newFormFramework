@@ -58,6 +58,9 @@
                             <div class="cmt_cont">
                                 {{item.content}}
                             </div>
+                            <div class="picList">
+                                <img src="../../../assets/img/temp/details.jpg" alt="">
+                            </div>
                         </dd>
                     </dl>
                     <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
@@ -81,7 +84,7 @@
                 </a>
             </div>
             <div class="btn_buy" @click="clickToBuy">立即购买</div>
-            <div class="btn_cart">加入购物车</div>
+            <div class="btn_cart" @click="addCart">加入购物车</div>
         </div>
     </div>
 </template>
@@ -143,7 +146,26 @@
                     return '';
                 }
                 return val.substring(0,4);
-            }
+            },
+            entitiestoUtf16(str){//表情解码
+                 // 检测出形如&#12345;形式的字符串
+                var strObj = utf16toEntities(str);
+                var patt = /&#\d+;/g;
+                var H,L,code;
+                var arr = strObj.match(patt)||[];
+                for (var i=0;i<arr.length;i++){
+                    code = arr[i];
+                    code=code.replace('&#','').replace(';','');
+                    // 高位
+                    H = Math.floor((code-0x10000) / 0x400)+0xD800;
+                    // 低位
+                    L = (code - 0x10000) % 0x400 + 0xDC00;
+                    code = "&#"+code+";";
+                    var s = String.fromCharCode(H,L);
+                    strObj = strObj.replace(code,s);
+                }
+                return strObj;
+            },
         },
         methods: {
            checkDetailTab(index){
@@ -177,6 +199,39 @@
            clickToBuy(){
                 this.$router.push({ path: '/fillOrder',query:{id:this.id}});
            },
+           addCart(){//加入购物车
+                var loading = weui.loading('加载中', {});
+                this.axios.post('/wechat/shopping_cart/put', querystring.stringify({//详情
+                    'store_id':this.id,
+                    'commodity_id':this.detail.store_id,
+                    'num':1
+                }))
+                .then(res => {
+                    loading.hide();//加载
+                    if(res.data.success){
+                        weui.toast("加入购物车成功", {//提示  
+                          duration: 1000,
+                          callback: ()=> {
+                            
+                          }
+                        });
+                    } else {
+                      weui.topTips(res.data.message,1000);//提示出错
+                    }
+                    
+                })
+           },
+           previewImage(item,arrSrc){//预览图片
+            var curSrc = item.thumbMedium;
+            var arr = [];
+            for(var i = 0; i < arrSrc.length; i++){
+              arr.push(arrSrc[i].thumbMedium);
+            }
+            wx.previewImage({
+                current: curSrc, // 当前显示图片的http链接
+                urls: arr // 需要预览的图片http链接列表
+            });
+          },
            onInfinite() {//获取评论
               var self = this;
              
@@ -242,6 +297,21 @@
             })
         }
     }
+    function utf16toEntities(str){//emoji表情字符处理
+    var patt=/[\ud800-\udbff][\udc00-\udfff]/g; // 检测utf16字符正则
+        str = str.replace(patt, function(char){
+            var H, L, code;
+            if (char.length===2) {
+                H = char.charCodeAt(0); // 取出高位
+                L = char.charCodeAt(1); // 取出低位
+                code = (H - 0xD800) * 0x400 + 0x10000 + L - 0xDC00; // 转换算法
+                return "&#" + code + ";";
+            } else {
+                return char;
+            }
+        });
+        return str;
+  }
 </script>
 <style lang="less" scoped>
     @import "../../../assets/css/details.less";

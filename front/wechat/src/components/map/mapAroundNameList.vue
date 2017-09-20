@@ -10,7 +10,7 @@
                         <div class="tit">{{item.title}}</div>
                         <div class="addr">
                             <span class="text">{{item.address}}</span>
-                            <span class="distance">距离：10公里</span>
+                            <!-- <span class="distance">距离：10公里</span> -->
                         </div>
                     </router-link>
                 </li>

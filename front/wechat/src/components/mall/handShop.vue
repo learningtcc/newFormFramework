@@ -46,7 +46,7 @@
             </div>
             <div class="shopFeature">
                 <h4>特色商品<router-link :to="{path:'/specialtyShop',query:{}}"><span>查看更多</span></router-link></h4>
-                <div class="shopBan">
+                <div class="shopBan swiper-container">
                     <div class="shopList swiper-wrapper">
                         <dl v-for="lis in list.feature_list" v-if="list.feature_list.is_features = 'Y'" class="swiper-slide">
                             <router-link :to="{path:'/productDetail',query:{id:lis.id}}">
@@ -118,10 +118,11 @@
                     });
                   });
                   self.$nextTick(function(){
-                    var swiper = new Swiper('.shopBan', {
-                      slidesPerView: 3,
-                      paginationClickable: true,
-                      spaceBetween: 0
+                    var swiper2 = new Swiper('.shopBan', {
+                      slidesPerView: 'auto',
+                      spaceBetween: 16,
+                      observer:true,
+                      observeParents:true,
                     });
                   })
 

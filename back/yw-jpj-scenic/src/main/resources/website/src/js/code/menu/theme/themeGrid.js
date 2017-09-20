@@ -157,7 +157,9 @@ export default function themeGrid (opt) {
               success: function (response) {
                 if (response.isSuccess) {
                   layer.msg('删除成功')
-                  opt.panel.refresh()
+                  opt.panel.refresh({
+                    delete: true
+                  })
                 } else {
                   layer.alert(response.errorMessage, function () {})
                 }
@@ -211,8 +213,8 @@ export default function themeGrid (opt) {
         N: '禁用'
       }
     }, {
-      text: '发布时间',
-      name: 'releaseTime'
+      text: '活动时间',
+      name: 'startTime'
     }, {
       type: 'operations',
       text: '操作',
@@ -238,6 +240,7 @@ export default function themeGrid (opt) {
       },
       boxExtraClass: ['col-sm-12'],
       render: (opt) => {
+        let timeIndex = $(opt.table).find('thead tr').find('[name="startTime"]').index()
         let datas = opt.response.data.root
         if (datas && datas.length) {
           $(opt.table).find('tbody').children().map((index, item) => {
@@ -247,6 +250,7 @@ export default function themeGrid (opt) {
             if (datas[index].isUsing !== 'Y') {
               $(item).find('[methodname="isEnable"]').removeClass('fa-eye').addClass('fa-eye-slash')
             }
+            $(item).children().eq(timeIndex).text(datas[index].startTime+' ~ '+datas[index].endTime)
           })
         }
       },

@@ -44,7 +44,7 @@ public class CommodityEvaluationServiceImpl implements CommodityEvaluationServic
         Map<String, Object> member_info = run.queryOne("member_info", member_id);
         String nick_name = String.valueOf(member_info.get("nick_name"));
         String head_image_url = String.valueOf(member_info.get("head_image_url"));
-        SimpleDateFormat bartDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        SimpleDateFormat bartDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = new Date();
         commodityEvaluation.setEvaluationTime(bartDateFormat.format(date));
         commodityEvaluation.setStoreId(store_id);

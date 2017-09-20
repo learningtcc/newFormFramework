@@ -3,6 +3,7 @@ import layer from 'static/layer/layer'
 import { btnPlusClass,btnReloadClass,windowCenter,setConfig } from 'common/commonClass';
 import GridPanel from 'component/gridPanel';
 import commentForm from 'code/menu/business/comment/commentForm';
+import { getFormatDate } from 'common/method';
 
 export default function commentGrid(opt){
     var btns = {
@@ -70,8 +71,9 @@ export default function commentGrid(opt){
             text:'审核状态',
             name:'auditStatus',
             data:{
-                Y:'已审核',
-                N:'未审核'
+                PendingAudit:'待审核',
+                AuditFail:'审核未通过',
+                Audited:'审核通过'
             }
         },{
             type:'operations',
@@ -95,6 +97,15 @@ export default function commentGrid(opt){
             fields:fields,
             title:{
                 innerHTML:(opt.title&&opt.title.innerHTML)||'评价管理'
+            },
+            render:(opt)=>{
+                let datas = opt.response.data.root
+                $(opt.table).find('tbody').children().map((index,item)=>{
+                    $(item).children().eq($(item).parent().prev().find('[name="createTime"]').index()).text(getFormatDate({
+                        timeStamp: datas[index].createTime,
+                        format: 'yyyy-MM-dd HH:mm:ss'
+                    }))
+                })
             },
             search:{
                 fields:[

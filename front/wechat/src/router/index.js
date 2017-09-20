@@ -42,15 +42,6 @@ export default new Router({
       }
     },
     {
-      path: '/interaction/index',
-      name: 'interaction',
-      component: resolve => require(['../components/mall/interaction/index'], resolve),
-      beforeEnter: (to, from, next) => {
-        document.title = '商家互动';
-        next()
-      }
-    },
-    {
       path: '/userCenter',
       name: 'userCenter',
       component: resolve => require(['../components/user/userCenter'], resolve),
@@ -141,7 +132,7 @@ export default new Router({
       }
     },
     {
-      path: '/',
+      path: '/streetService',
       name: 'streetService',
       component: resolve => require(['../components/streetConsult/streetService'], resolve),
       beforeEnter: (to, from, next) => {
@@ -285,6 +276,15 @@ export default new Router({
       }
     },
     {
+      path: '/interaction/index',
+      name: 'interaction',
+      component: resolve => require(['../components/mall/interaction/index'], resolve),
+      beforeEnter: (to, from, next) => {
+        document.title = '商家互动';
+        next()
+      }
+    },
+    {
       path: '/interactionList',
       name: 'interactionList',
       component: resolve => require(['../components/mall/interaction/interactionList'], resolve),
@@ -317,6 +317,15 @@ export default new Router({
       component: resolve => require(['../components/user/myInteraction'], resolve),
       beforeEnter: (to, from, next) => {
         document.title = '我的互动';
+        next()
+      }
+    },
+    {
+      path: '/myInteractionR',
+      name: 'myInteractionR',
+      component: resolve => require(['../components/user/myInteractionR'], resolve),
+      beforeEnter: (to, from, next) => {
+        document.title = '我的互动发布';
         next()
       }
     },
