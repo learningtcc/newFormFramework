@@ -323,7 +323,7 @@ public class StoreUserServiceImpl extends BaseServiceImpl  implements StoreUserS
         resortsUser.setIsResetPassword(CommonEnum.YesOrNo.NO.getCode());
 
         // // 设置是否锁定,初始默认都不锁定
-        // resortsUser.setIsLock(YesOrNo.NO.getCode());
+       resortsUser.setIsLock(CommonEnum.YesOrNo.NO.getCode());
        resortsUser.setCreator(creatorId);
 
         model = this.saveObject(resortsUser, StoreUser.table);
@@ -444,9 +444,11 @@ public class StoreUserServiceImpl extends BaseServiceImpl  implements StoreUserS
                 return model;
             }
 
-            if (loginUserId.equalsIgnoreCase(id)) {
-                model.setErrorMessage("不能删除当前登录用户");
-                return model;
+            if(!StringUtils.isEmpty(loginUserId)){
+                if (loginUserId.equalsIgnoreCase(id)) {
+                    model.setErrorMessage("不能删除当前登录用户");
+                    return model;
+                }
             }
 
             if (CommonEnum.YesOrNo.YES.getCode().equalsIgnoreCase(old.getIsAdmin())) {
@@ -547,6 +549,29 @@ public class StoreUserServiceImpl extends BaseServiceImpl  implements StoreUserS
     @Override
     public boolean checkIdExist(String id) {
         return checkIdExist(id, StoreUser.table, StoreUser.class);
+    }
+
+    /**
+     *  启禁用
+     *
+     * @param id
+     * @return
+     */
+    public RestMessageModel disableUser(String id) {
+        StoreUser old = findById(id);
+        RestMessageModel model = new RestMessageModel();
+        if (old == null) {
+            model.setErrorMessage("没有查询到对象");
+            return model;
+        }
+        // 状态更改
+        String isLock;
+        isLock = CommonEnum.YesOrNo.NO.getCode();
+        if(CommonEnum.YesOrNo.NO.getCode().equals(old.getIsLock())){
+            isLock = CommonEnum.YesOrNo.YES.getCode();
+        }
+        old.setIsLock(isLock);
+        return this.updateObject(id, old, StoreUser.table);
     }
 
 }

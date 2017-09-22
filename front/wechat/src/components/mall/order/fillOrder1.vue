@@ -53,8 +53,7 @@
                   <div class="checkbox active"></div><i></i><a><span class="text">{{storeDetail.name}}</span></a>
               </dt>
             </dl>
-            <!-- 立即购买 -->
-            <dl class="goods_info" v-if="id">
+            <dl class="goods_info">
               <dt>
                 <img :src="detail.theme_pic" height="280" width="380" alt="">
               </dt>
@@ -66,26 +65,8 @@
                 </div>
               </dd>
             </dl>
-            <!-- /立即购买 -->
-            <div v-else>
-                <dl class="goods_info" v-for="list in cartGoods" :key="list.id">
-                  <dt>
-                    <img :src="list.theme_pic" height="280" width="380" alt="">
-                  </dt>
-                  <dd>
-                    <div class="tit">{{list.name}}</div>
-                    <div class="price">
-                      <span class="unit">{{list.price}}元/{{list.price_content}}</span>
-                      <!-- <em class="num">x{{number}}</em> -->
-                    </div>
-                    <fillcontrol :tea="list" :getTotal="getTotal"></fillcontrol>
-                  </dd>
-                </dl>
-            </div>
-            
             <div class="cont_list">
-                <!-- 立即购买 -->
-                <dl v-if="id">
+                <dl>
                   <dt>购买数量</dt>
                   <dd>
                     <div class="sub">
@@ -95,7 +76,6 @@
                     </div>
                   </dd>
                 </dl>
-                <!-- /立即购买 -->
                 <dl @click="clickPopup(shopDiscount)" v-if="shopDiscount.arr.length > 0">
                   <dt>店铺优惠</dt>
                   <dd>
@@ -168,17 +148,13 @@
 
 <script>
     var querystring = require('querystring');
-    import fillcontrol from './fillcontrol'
     export default{
         components:{
-            fillcontrol
+
         },
         data(){
             return{
               id:this.$route.query.id,
-              submitObj:this.$route.query.submitObj,
-              cartGoods:[],
-              totalCommodityInfo:[],
               addressId:"",
               detail:{},
               storeDetail:{},
@@ -200,8 +176,7 @@
                 tab:0,
                 realTab:0,
               },
-              totalObj:{},
-              total:0
+              totalObj:{}
             }
         },
         watch:{
@@ -248,49 +223,20 @@
             });
           },
           getProductDetail(){//获取商品详情
-            // var loading = weui.loading('加载中', {//loading
-            // });
-            console.log(this.id);
-            if(this.id){//立即购买
+            var loading = weui.loading('加载中', {//loading
+            });
+            this.axios.post('/wechat/shop/detail', querystring.stringify({//详情
+                'id':this.id
+            }))
+            .then(res => {
+                loading.hide();//加载
+                if(res.data.success){
 
-              this.axios.post('/wechat/shop/detail', querystring.stringify({//详情
-                  'id':this.id
-              }))
-              .then(res => {
-                  //loading.hide();//加载
-                  if(res.data.success){
-
-                      this.detail = res.data.data.commodity_info;
-                      this.getCouponDetail(this.detail.store_id);
-                      this.getStoreDetail(this.detail.store_id);
-                  }
-              })
-            } else {//购物车加入
-                //console.log(this.submitObj);
-                var submitObj = JSON.parse(this.submitObj);
-                var store = submitObj.store;
-                var goods = submitObj.goods;
-                this.getCouponDetail(store.store_id);
-                this.getStoreDetail(store.store_id);
-                goods.forEach((value,index) => {
-                  //console.log(value);
-                  this.axios.post('/wechat/shop/detail', querystring.stringify({//详情
-                      'id':value.commodity_id
-                  }))
-                  .then(res => {
-                      //loading.hide();//加载
-                      if(res.data.success){
-                          var detail = res.data.data.commodity_info;
-                          this.$set(detail,'num',value.num);
-                          this.cartGoods.push(detail);
-                          this.getTotal();
-                      }
-                  })
-                });
-                
-                
-            }
-            
+                    this.detail = res.data.data.commodity_info;
+                    this.getCouponDetail(this.detail.store_id);
+                    this.getStoreDetail(this.detail.store_id);
+                }
+            })
           },
           getCouponDetail(storeId){//店铺优惠券列表
             //this.shopDiscount.arr = [];
@@ -309,7 +255,7 @@
             }))
             .then(res => {
                 if(res.data.success){
-                    var data = res.data.data;
+                    var data = res.data.data.data; 
                     this.addressList.splice(0,this.addressList.length);
                     if(data.length > 0){
                       this.addressList.push(data[0]);
@@ -329,12 +275,7 @@
           },
           ChooseAddress(){//跳转选择地址
             this.writeStore();
-            if(this.id){//立即购买的单个商品购买
-              this.$router.push({ path: '/addressList',query:{fillOrderId:this.id}});
-            } else {
-              this.$router.push({ path: '/addressList',query:{cartObj:'cartObj'}});
-            }
-            
+            this.$router.push({ path: '/addressList',query:{fillOrderId:this.id}});
           },
           writeStore(){
             var record = {number:this.number, receiveRealTab:this.receiveType.realTab,shopDiscountRealTab:this.shopDiscount.realTab};
@@ -353,18 +294,9 @@
             if(this.shopDiscount.arr.length > 0){
               couponId = this.shopDiscount.arr[this.shopDiscount.realTab].id;
             }
-            this.totalCommodityInfo = [];
-            if(this.id){
-              this.totalCommodityInfo.push({commodity_id:this.id,commodity_num:this.number});
-
-            } else {
-
-                this.cartGoods.forEach((value,index) => {
-                  this.totalCommodityInfo.push({commodity_id:value.id,commodity_num:value.num});
-                });
-            }
             this.axios.post('/wechat/order/get_total', querystring.stringify({//获取总价信息
-              commodity_info : JSON.stringify(this.totalCommodityInfo),//商品信息
+              commodity_id : this.id,//商品id
+              buy_num : this.number,//购买数量
               offer_voucher_id : couponId//优惠券id
             }))
             .then(res => {
@@ -374,11 +306,10 @@
                     
                 }
             })
-            
           },
           submit(){//提交订单
             var result = {error:false, msg:""};
-            if(this.receiveType.realTab == 0){//选择送货上门
+            if(this.receiveType.realTab == 0){
               testEmpty(this.addressList, result, '地址收货地址不能为空');
             }
             
@@ -405,8 +336,8 @@
             this.axios.post('/wechat/order/create', querystring.stringify({//创建订单接口
               receipt_way : this.receiveType.arr[this.receiveType.realTab].key, //收货方式:自提offline 快递 express
               member_address_id : addrId, //会员地址信息id,收货方式为自提 可不传
-              store_id:this.storeDetail.id,
-              commodity_info : JSON.stringify(this.totalCommodityInfo), //商品信息
+              commodity_id : this.id, //商品id
+              buy_num : this.number, //购买数量
               offer_voucher_id : discountId//优惠券id,可为空
             }))
             .then(res => {
@@ -416,7 +347,7 @@
                       duration: 1000,
                       callback: ()=> {
                         var orderId = res.data.data.order_id;
-                        this.$router.push({ path: '/orderSucc',query:{id:orderId,storeId:this.storeDetail.id}});
+                        this.$router.push({ path: '/orderSucc',query:{id:orderId,storeId:this.detail.store_id}});
                       }
                     });
                 } else {
@@ -426,7 +357,6 @@
           }
         },
         mounted(){
-          console.log(this.id);
             this.getProductDetail();
             this.readAddressId();//选择的地址
             if(this.addressId){

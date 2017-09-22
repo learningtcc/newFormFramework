@@ -876,6 +876,7 @@ class FormPanel extends Panel {
         if (this.data && Object.keys(this.data).length && fields.name && this.data[fields.name]) {
           editor.txt.html(this.data[fields.name])
           this[fieldInputText].value = this.data[fields.name]
+          this[fieldInputTextHidden].value = this.data[fields.name]
         }
       } else if (/multigraph/i.test(fields.type)) {
         let fieldInputText = 'field-inputText' + opt.number

@@ -1,6 +1,9 @@
 package com.drore.cloud.service.impl;
 
+import com.drore.cloud.constant.LocalConstant;
+import com.drore.cloud.model.MemberInfo;
 import com.drore.cloud.sdk.client.CloudQueryRunner;
+import com.drore.cloud.sdk.common.ThreadLocalHolder;
 import com.drore.cloud.sdk.common.resp.RestMessage;
 import com.drore.cloud.sdk.domain.Pagination;
 import com.drore.cloud.service.OrderService;
@@ -23,15 +26,17 @@ public class OrderServiceImpl implements OrderService{
     public RestMessage getOrderList(String condition,Integer page_size,Integer current_page){
         RestMessage restMessage = new RestMessage();
         Pagination<Map> pagination;
-        String user_id = "6b5e8fcc07c54e33918f434aff5d3376";
+        //获取用户信息
+        MemberInfo memberInfo  = (MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
+
         if ("NoPay".equals(condition)){
-            pagination = run.queryListByExample("order_info", ImmutableMap.of("member_id", user_id,"order_status",condition),current_page,page_size);
+            pagination = run.queryListByExample("order_info", ImmutableMap.of("member_id", memberInfo.getId(),"order_status",condition),current_page,page_size);
         }else if ("HasPay".equals(condition)){
-            pagination = run.queryListByExample("order_info", ImmutableMap.of("member_id", user_id,"order_status",condition),current_page,page_size);
+            pagination = run.queryListByExample("order_info", ImmutableMap.of("member_id", memberInfo.getId(),"order_status",condition),current_page,page_size);
         }else if ("NoReceive".equals(condition)){
-            pagination = run.queryListByExample("order_info", ImmutableMap.of("member_id", user_id,"order_status",condition),current_page,page_size);
+            pagination = run.queryListByExample("order_info", ImmutableMap.of("member_id", memberInfo.getId(),"order_status",condition),current_page,page_size);
         }else {
-            pagination = run.queryListByExample("order_info", ImmutableMap.of("member_id", user_id),current_page,page_size);
+            pagination = run.queryListByExample("order_info", ImmutableMap.of("member_id", memberInfo.getId()),current_page,page_size);
         }
         List<Map> data = pagination.getData();
         for (int i = 0; i < data.size(); i++) {

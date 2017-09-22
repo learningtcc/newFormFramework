@@ -35,12 +35,9 @@ public class OfferVoucherServiceImpl implements OfferVoucherService{
     @Override
     public RestMessage detail(String storeId) {
 
-        String user_id = "6b5e8fcc07c54e33918f434aff5d3376";
+        Map<String, Object> map = new HashMap<>();
         //获取用户信息
         MemberInfo memberInfo = (MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
-        if(memberInfo != null){
-            user_id = memberInfo.getId();
-        }
 
         RestMessage restMessage = new RestMessage();
         Map store_info = run.queryFirstByRName("store_info", ImmutableMap.of("id", storeId));
@@ -49,13 +46,16 @@ public class OfferVoucherServiceImpl implements OfferVoucherService{
         Pagination<Map> commodity_info = run.queryListByExample("commodity_info", ImmutableMap.of("store_id", storeId,
                 "is_deleted","N","is_shelves","Y"),1,2);
         Pagination<Map> image_info = run.queryListByExample("image_info", ImmutableMap.of("table_pk", storeId, "table_name", "store_info"));
-        Map user_collection = run.queryFirstByRName("user_collection", ImmutableMap.of("user_id", user_id, "collection_type", "Store", "commodity_id", storeId));
-        Map<String, Object> map = new HashMap<>();
-        if (user_collection != null && !user_collection.isEmpty()){
-            map.put("is_collection","Y");
-        }else {
-            map.put("is_collection","N");
+
+        if(memberInfo != null){
+            Map user_collection = run.queryFirstByRName("user_collection", ImmutableMap.of("user_id", memberInfo.getId(), "collection_type", "Store", "commodity_id", storeId));
+            if (user_collection != null && !user_collection.isEmpty()){
+                map.put("is_collection","Y");
+            }else {
+                map.put("is_collection","N");
+            }
         }
+
         map.put("store_info",store_info);
         map.put("offer_voucher",offer_voucher);
         map.put("commodity_info",commodity_info);

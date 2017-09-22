@@ -446,5 +446,14 @@ export default new Router({
         next()
       }
     },
+    {
+      path: '/fillOrder1',
+      name: 'fillOrder1',
+      component: resolve => require(['../components/mall/order/fillOrder1'], resolve),
+      beforeEnter: (to, from, next) => {
+        document.title = '订单填写';
+        next()
+      }
+    },
   ]
 })

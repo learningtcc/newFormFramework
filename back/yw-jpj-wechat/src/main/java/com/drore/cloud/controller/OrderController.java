@@ -14,6 +14,7 @@ import com.drore.cloud.sdk.common.util.DateUtil;
 import com.drore.cloud.sdk.common.util.GsonUtil;
 import com.drore.cloud.sdk.common.util.RandomKit;
 import com.drore.cloud.service.OrderService;
+import com.drore.cloud.service.ShoppingCartService;
 import com.drore.cloud.util.CouponUtil;
 import com.drore.cloud.vo.OrderVo;
 import com.drore.cloud.vo.TotalVo;
@@ -46,6 +47,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ShoppingCartService cartService;
 
     @ApiOperation(value = "获取总价信息",notes = "获取总价信息")
     @PostMapping("/get_total")
@@ -98,7 +102,7 @@ public class OrderController {
 
     //订单填写界面
     @Login
-    @ApiOperation(value = "创建订单",notes = "创建订单")
+    @ApiOperation(value = "创建订单——何仁杰",notes = "创建订单")
     @PostMapping("/create")
     public RestMessage create(@Valid@ModelAttribute OrderVo vo){
         RestMessage rm = new RestMessage();
@@ -123,11 +127,38 @@ public class OrderController {
         }
 
         //多个商品
+        JsonArray commodityList = new JsonParser().parse(vo.getCommodity_info()).getAsJsonArray();
+        BigDecimal total = new BigDecimal("0.0");   //商品总价
+        List<OrderDetail> orderDetailList = new ArrayList<>();  //订单详情集合
+        for (JsonElement commodityEle : commodityList){
+            JsonObject commodityInfo = commodityEle.getAsJsonObject();
+            String commodity_id = GsonUtil.toStringValue(commodityInfo.get("commodity_id"));    //商品id
+            String commodity_num = GsonUtil.toStringValue(commodityInfo.get("commodity_num"));  //商品数量
+            if(StringUtils.isNotBlank(commodity_id) && StringUtils.isNotBlank(commodity_num)){
+                Map<String,Object> commodity = run.queryOne("commodity_info",commodity_id);
+                if(commodity == null || commodity.size()==0){
+                    throw new MacroApiException("无法获取商品信息，请检查商品id");
+                }
+                //验证商品是否属于该商店
+                if(!vo.getStore_id().equals(commodity.get("store_id").toString())){
+                    throw new MacroApiException("商品信息和商店信息不匹配,请检查参数");
+                }
+                //计算商品总价
+                BigDecimal de_price = new BigDecimal(Objects.toString(commodity.get("price")));
+                total = total.add(de_price.multiply(new BigDecimal(commodity_num)));
 
+                //创建订单详情信息(未追加orderId,保存订单后再追加)
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setCommodityPic(Objects.toString(commodity.get("theme_pic")));
+                orderDetail.setCommodityId(commodity_id);
+                orderDetail.setCommodityName(Objects.toString(commodity.get("name")));
+                orderDetail.setCommodityAmout(Double.parseDouble(commodity_num));
+                orderDetail.setCommodityPrice(new BigDecimal(Objects.toString(commodity.get("price"))).doubleValue());
+                //追加到订单详情集合中
+                orderDetailList.add(orderDetail);
+            }
+        }
 
-        Map<String, Object> commodity_info = run.queryOne("commodity_info", vo.getCommodity_id());
-        BigDecimal price = new BigDecimal(Objects.toString(commodity_info.get("price")));
-        BigDecimal total = price.multiply(new BigDecimal(vo.getBuy_num()));
 
         //商店信息
         Map<String, Object> store_info = run.queryOne("store_info",vo.getStore_id());
@@ -161,32 +192,32 @@ public class OrderController {
             orderInfo.setOfferVoucherPrice(new BigDecimal("0.0").doubleValue());
             orderInfo.setDisbursements(total.doubleValue());
         }
-
         orderInfo.setOrderTime(DateUtil.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
+        RestMessage order_info = run.insert("order_info", orderInfo);   //保存订单信息
 
-        RestMessage order_info = run.insert("order_info", orderInfo);
-        //目前只支持单个商品购买，加入购物车批量后 再说
-        OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setOrderId(order_info.getId());
-        orderDetail.setCommodityPic(Objects.toString(commodity_info.get("theme_pic")));
-        orderDetail.setCommodityId(vo.getCommodity_id());
-        orderDetail.setCommodityName(Objects.toString(commodity_info.get("name")));
-        orderDetail.setCommodityAmout(vo.getBuy_num());
-        orderDetail.setCommodityPrice(new BigDecimal(Objects.toString(commodity_info.get("price"))).doubleValue());
-        rm=run.insert("order_detail",orderDetail);
+        //为订单详情集合追加订单id
+        for (OrderDetail orderDetail : orderDetailList){
+            orderDetail.setOrderId(order_info.getId());
+        }
+        //保存订单详情
+        rm = run.insertBatch("order_detail",orderDetailList);
+
         if(rm.isSuccess()){
             Map<String,Object> data = new HashMap<>();
-            data.put("order_id",orderDetail.getOrderId());
+            data.put("order_id",order_info.getId());
             rm.setData(data);
             rm.setMessage("下单成功");
         }
         //订单下成功后去redis 把相应的购物车信息清空
-        //等待做
-
-        return rm;
+        if(cartService.removeAll()){
+            return rm;
+        }else{
+            throw new MacroApiException("清空购物车信息发生异常,请检查");
+        }
     }
 
 
+    @Login
     @ApiOperation(value = "我的订单-王璐",notes = "我的订单")
     @PostMapping("/getOrderList")
     @ApiImplicitParams({

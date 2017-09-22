@@ -18,6 +18,8 @@ public class ShoppingGoods implements Serializable {
     private String commodity_id;
     @ApiModelProperty(name="商品名称",dataType="String",required = true)
     private String commodity_name;
+    @ApiModelProperty(name="商品图片",dataType = "String",required = true)
+    private String commodity_image;
     @ApiModelProperty(name="商品数量",dataType="int",required = true)
     private Integer num;
     @ApiModelProperty(name="商品单价",dataType="Double",required = true)
@@ -37,6 +39,14 @@ public class ShoppingGoods implements Serializable {
 
     public void setCommodity_name(String commodity_name) {
         this.commodity_name = commodity_name;
+    }
+
+    public String getCommodity_image() {
+        return commodity_image;
+    }
+
+    public void setCommodity_image(String commodity_image) {
+        this.commodity_image = commodity_image;
     }
 
     public Integer getNum() {

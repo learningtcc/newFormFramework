@@ -29,6 +29,7 @@ public class ShoppingcartUtil {
         newgood.setPrice(cart.getPrice());
         newgood.setCommodity_id(cart.getCommodity_id());
         newgood.setCommodity_name(cart.getCommodity_name());
+        newgood.setCommodity_image(cart.getCommodity_image());
         return newgood;
     }
     /**
@@ -42,6 +43,7 @@ public class ShoppingcartUtil {
         ShoppingGoods goods = new ShoppingGoods();
         goods.setCommodity_id(cart.getCommodity_id());
         goods.setCommodity_name(cart.getCommodity_name());
+        goods.setCommodity_image(cart.getCommodity_image());
         goods.setNum(cart.getNum());
         goods.setPrice(cart.getPrice());
         goodmap.put(cart.getCommodity_id(),goods);
@@ -60,6 +62,7 @@ public class ShoppingcartUtil {
         ShoppingGoods goods = new ShoppingGoods();
         goods.setCommodity_id(cart.getCommodity_id());
         goods.setCommodity_name(cart.getCommodity_name());
+        goods.setCommodity_image(cart.getCommodity_image());
         goods.setNum(cart.getNum());
         goods.setPrice(cart.getPrice());
         goodmap.put(cart.getCommodity_id(),goods);

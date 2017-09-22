@@ -98,6 +98,7 @@ public class ShoppingCartController {
     public RestMessage remove(){
         RestMessage rm=new RestMessage();
         if(cartService.removeAll()){
+            rm.setSuccess(true);
             rm.setMessage("清除数据成功");
         }
         return rm;

@@ -5,10 +5,10 @@
             <header class="header">
                 <div class="banner swiper-container">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="moreimg in list.advertising_info.data" @click="advertis(moreimg)">
-                            <!-- <a :href="moreimg.link_url"> -->
+                        <div class="swiper-slide" v-for="moreimg in list.advertising_info.data">
+                            <router-link :to="moreimg.link_url">
                                 <img class="header-banner-img" :src="moreimg.image_url">
-                           <!--  </a> -->
+                            </router-link>
                         </div>
                   </div>
                     <div class="swiper-pagination"></div>

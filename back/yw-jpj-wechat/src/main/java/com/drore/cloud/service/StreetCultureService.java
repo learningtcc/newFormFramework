@@ -8,4 +8,6 @@ import com.drore.cloud.sdk.common.resp.RestMessage;
 public interface StreetCultureService {
 
     public RestMessage list(Integer page_size, Integer current_page);
+
+    public RestMessage addClicks(String id);
 }

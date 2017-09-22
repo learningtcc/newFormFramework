@@ -29,7 +29,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/wechat': {
-        target: 'http://192.168.11.113:6980/wechat',
+        target: 'http://ywjpj.drdss.com/wechat',
         changeOrigin: true,
         pathRewrite: {
           '^/wechat': ''
@@ -48,14 +48,7 @@ module.exports = {
         pathRewrite: {
           '^/macro': ''
         }
-      },
-      '/wechat': {
-        target: 'http://192.168.11.113:6980/wechat',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/wechat': ''
-        }
-      },
+      }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

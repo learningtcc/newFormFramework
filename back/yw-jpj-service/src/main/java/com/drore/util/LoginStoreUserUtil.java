@@ -1,6 +1,9 @@
 package com.drore.util;
 
 import com.drore.domain.store.StoreUser;
+import com.drore.exception.CustomException;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 
 /**
  * 浙江卓锐科技股份有限公司 版权所有 © Copyright 2016<br/>
@@ -23,13 +26,13 @@ public class LoginStoreUserUtil {
 
 
 	public static StoreUser getStoreUser() {
-		StoreUser sysUser = new StoreUser();
+		/*StoreUser sysUser = new StoreUser();
 		sysUser.setId("test");
 		sysUser.setStoreId("develop");
-		return  sysUser;
+		return  sysUser;*/
 
 
-		/*Subject subject = SecurityUtils.getSubject();
+		Subject subject = SecurityUtils.getSubject();
 		Object object = subject.getPrincipal();
 		StoreUser sysUser = null;
 		if (object != null) {
@@ -37,6 +40,6 @@ public class LoginStoreUserUtil {
 		} else{
 			throw new CustomException("无法获取登录用户信息");
 		}
-		return sysUser;*/
+		return sysUser;
 	}
 }

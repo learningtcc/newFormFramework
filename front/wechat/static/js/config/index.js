@@ -1,4 +1,5 @@
 var config = {
+	domain:'http://ywjpj.drdss.com/',
 	addressList:'/wechat/user/addressList',
 	deleteAddress:'/wechat/user/delete',
 	userInfo:'/wechat/user/userInfo',

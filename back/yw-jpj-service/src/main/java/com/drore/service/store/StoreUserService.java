@@ -144,4 +144,12 @@ public interface StoreUserService {
     public PageUtil findShowListByPage(PageUtil pageUtil, StoreUser user);
 
     boolean checkIdExist(String id);
+
+    /**
+     * 启用禁用
+     * @param id
+     * @return
+     */
+    public RestMessageModel disableUser(String id);
+
 }

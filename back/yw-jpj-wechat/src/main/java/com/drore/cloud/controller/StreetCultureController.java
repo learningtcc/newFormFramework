@@ -34,4 +34,14 @@ public class StreetCultureController {
         RestMessage restMessage = streetCultureService.list(page_size, current_page);
         return restMessage;
     }
+
+    @ApiOperation(value = "浏览次数",notes = "浏览次数")
+    @GetMapping("/addClicks")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "街区文化主键",dataType = "String",required = true)
+    })
+    public RestMessage addClicks(@RequestParam(value = "id") String id){
+        RestMessage restMessage = streetCultureService.addClicks(id);
+        return restMessage;
+    }
 }

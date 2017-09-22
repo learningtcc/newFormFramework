@@ -17,7 +17,7 @@
                <div class="price">￥<em>{{detail.price}}</em>/{{detail.price_content}}</div> 
             </div>
             <div class="info_rt">
-                <p class="scores">评分：<i>{{detail.points}}分</i></p>
+                <p class="scores">评分：<i>{{starsValue}}分</i></p>
                 <div class="stars">
                     <el-rate v-model="starsValue" disabled text-color="#ff9900"></el-rate>
                 </div>
@@ -25,7 +25,7 @@
         </div>
         <div class="pro_info">
             <ul>
-                <li>时间：{{detail.plucking_time}}</li><li>种类：{{detail.species_name}}</li><li>生产时间：{{detail.production_time | productDate}}</li><li>产地：{{detail.local}}</li><li>净含量：{{detail.standard}}</li><li>已售：56笔</li>
+                <li>时间：{{detail.plucking_time}}</li><li>种类：{{detail.species_name}}</li><li>生产时间：{{detail.production_time | productDate}}</li><li>产地：{{detail.local}}</li><li>净含量：{{detail.standard}}</li><li>已售：{{detail.orderNum}}笔</li>
             </ul>
         </div>
         <div class="cont_detail">
@@ -56,10 +56,10 @@
                             </div>
                             <div class="time">{{item.evaluation_time}}</div>
                             <div class="cmt_cont">
-                                {{item.content}}
+                                {{item.content | entitiestoUtf16}}
                             </div>
-                            <div class="picList">
-                                <img src="../../../assets/img/temp/details.jpg" alt="">
+                            <div class="picList" v-if="item.cms_material_info">
+                                <img :src="img.pic_url" alt="" v-for="img in item.cms_material_info.data">
                             </div>
                         </dd>
                     </dl>
@@ -92,6 +92,7 @@
 
 <script>
     var querystring = require('querystring');
+    import config from '../../../../static/js/config/index.js'
     import { swiper, swiperSlide } from 'vue-awesome-swiper';
     import InfiniteLoading from 'vue-infinite-loading';
     export default{
@@ -102,7 +103,7 @@
         },
         data(){
             return{
-                starsValue:4,
+                starsValue:5,
                 swiperOption: {
                     notNextTick: true,
                     autoplay: 3000,
@@ -134,6 +135,7 @@
                 id:this.$route.query.id,
                 cms:{},
                 detail:{},
+                storeInfo:{},
                 lists:[],
                 totalPage:1,
                 currentPage:0,
@@ -197,14 +199,19 @@
                 this.favorCheck = !this.favorCheck;
            },
            clickToBuy(){
-                this.$router.push({ path: '/fillOrder',query:{id:this.id}});
+                //this.$router.push({ path: '/fillOrder',query:{id:this.id}});
+                window.location.href = config.domain + 'macro/weixin/auth?url='+ config.domain +'%23/fillOrder?id=' + this.id;
            },
            addCart(){//加入购物车
                 var loading = weui.loading('加载中', {});
                 this.axios.post('/wechat/shopping_cart/put', querystring.stringify({//详情
-                    'store_id':this.id,
-                    'commodity_id':this.detail.store_id,
-                    'num':1
+                    'store_id':this.detail.store_id,
+                    'commodity_id':this.id,
+                    'commodity_image':this.detail.theme_pic,
+                    'num':1,
+                    'store_name':this.storeInfo.name,
+                    'commodity_name':this.detail.name,
+                    'price':this.detail.price
                 }))
                 .then(res => {
                     loading.hide();//加载
@@ -234,7 +241,7 @@
           },
            onInfinite() {//获取评论
               var self = this;
-             
+              
               if(self.currentPage < self.totalPage){
 
                 function load(){
@@ -287,8 +294,15 @@
                 if(res.data.success){
 
                     this.detail = res.data.data.commodity_info;
+                    this.storeInfo = res.data.data.store_info;
                     this.favorCheck = this.collectionStatus[this.detail.is_collection];
                     this.cms = res.data.data.commodity_info.cms_material_info.data;
+                    if(this.detail.points){
+                        this.starsValue = this.detail.points;
+                    } else {
+                        this.starsValue = 5;
+                    }
+                    
 
                 } else {
                   

@@ -40,15 +40,15 @@
                 <dl>
                     <router-link :to="{path:'/teaList',query:{}}">
                         <dt><img src="../../assets/img/temp/shop5.png"></dt>
-                        <dd>供应链</dd>
+                        <dd>茶文化</dd>
                     </router-link>
                 </dl>
             </div>
             <div class="shopFeature">
                 <h4>特色商品<router-link :to="{path:'/specialtyShop',query:{}}"><span>查看更多</span></router-link></h4>
                 <div class="shopBan swiper-container">
-                    <div class="shopList swiper-wrapper">
-                        <dl v-for="lis in list.feature_list" v-if="list.feature_list.is_features = 'Y'" class="swiper-slide">
+                    <div class="shopList swiper-wrapper"> 
+                        <dl v-for="lis in list.feature_list" v-if="lis.is_features =='Y' && lis.is_shelves =='Y'" class="swiper-slide">
                             <router-link :to="{path:'/productDetail',query:{id:lis.id}}">
                                 <dt><img :src="lis.theme_pic"></dt>
                                 <dd>
@@ -64,8 +64,8 @@
             <div class="hotShop">
                 <h4>热门商铺<router-link :to="{path:'/hotShop',query:{}}"><span>查看更多</span></router-link></h4>
                 <dl v-for="storeLis in list.store_list">
-                    <router-link :to="{path:'/onlineshop/list',query:{}}">
-                        <dt><img src="../../assets/img/temp/shopList1.png"></dt>
+                    <router-link :to="{path:'/storeDetail',query:{id:storeLis.id}}">
+                        <dt><img :src="storeLis.theme_pic"></dt>
                         <dd>
                             <p class="shopName">{{storeLis.name}}</p>
                             <p class="shopIntro">类型：{{storeLis.type}}</p>
@@ -74,7 +74,9 @@
                     </router-link>
                 </dl>
             </div>
-            <div class="posted"></div>
+            <router-link :to="{path:'/cart',query:{}}">
+                <div class="posted"></div>
+            </router-link>
         </div>
     </div>
 </template>

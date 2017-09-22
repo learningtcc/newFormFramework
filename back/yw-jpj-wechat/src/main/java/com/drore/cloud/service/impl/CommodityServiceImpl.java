@@ -70,6 +70,12 @@ public class CommodityServiceImpl implements CommodityService {
                 commodityInfo.put("is_collection","N");
             }
         }
+
+        //订单数量
+        String sql = "select count(*) num from order_detail detail,order_info info where info.id = detail.order_id and info.order_status = 'HasPay' and detail.commodity_id = '"+ commodityId +"'";
+        Pagination<Map> orderNumMap = run.sql(sql);
+        commodityInfo.put("orderNum",orderNumMap.getData().get(0).get("num"));
+
         //追加商铺信息
         data.put("store_info",run.queryOne("store_info",commodityInfo.get("store_id").toString()));
         //追加商品图集信息

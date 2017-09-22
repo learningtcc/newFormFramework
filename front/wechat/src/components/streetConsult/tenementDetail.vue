@@ -84,7 +84,7 @@
               if(detail.lease_info.contactTel!=""&&detail.lease_info.contactTel!=null){
                 window.location.href = 'tel:' + detail.lease_info.contactTel;
               }else {
-                alert("暂无商家电话")
+                weui.alert("暂无商家电话")
               }
             },
             storeBtn(item){

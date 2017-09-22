@@ -17,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 功能描述：商家信息服务层接口                 <br/>
@@ -216,7 +214,7 @@ public class StoreServiceImpl implements StoreService {
         if(CommonEnum.YesOrNo.YES.getCode().equalsIgnoreCase(old.getIsHot())){
             throw  new CustomException("已经热门商铺，无需重复设置!");
         }
-        Map<String,Object> map  =new HashMap<String,Object>();
+        /*Map<String,Object> map  =new HashMap<String,Object>();
         map.put("is_hot", CommonEnum.YesOrNo.YES.getCode());
         Pagination pagination =  run.queryListByExample(StoreInfo.class,StoreInfo.table,map);
         if(CollectionUtils.isNotEmpty(pagination.getData())){
@@ -229,7 +227,7 @@ public class StoreServiceImpl implements StoreService {
                 }
             }
 
-        }
+        }*/
         old.setIsHot(CommonEnum.YesOrNo.YES.getCode());
         return  run.update(StoreInfo.table,id,old);
 

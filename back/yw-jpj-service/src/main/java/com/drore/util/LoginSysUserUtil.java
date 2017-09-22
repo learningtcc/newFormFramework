@@ -1,6 +1,9 @@
 package com.drore.util;
 
 import com.drore.domain.sys.SysUser;
+import com.drore.exception.CustomException;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 
 /**
  * 浙江卓锐科技股份有限公司 版权所有  Copyright 2017<br/>
@@ -18,12 +21,12 @@ public class LoginSysUserUtil {
 
 
     public static SysUser getSysUser() {
-        SysUser sysUser = new SysUser();
+        /*SysUser sysUser = new SysUser();
         sysUser.setId("2f34b4995aeb4456ab037f3415579ac2");
         sysUser.setUserName("admin");
         sysUser.setIsAdmin("Y");
-        return  sysUser;
-        /* Subject subject = SecurityUtils.getSubject();
+        return  sysUser;*/
+        Subject subject = SecurityUtils.getSubject();
         Object object = subject.getPrincipal();
         SysUser sysUser = null;
         if (object != null) {
@@ -31,6 +34,6 @@ public class LoginSysUserUtil {
         } else{
             throw new CustomException("无法获取登录用户信息");
         }
-        return sysUser;*/
+        return sysUser;
     }
 }

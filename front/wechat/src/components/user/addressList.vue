@@ -56,6 +56,7 @@
                totalPage:1,
                currentPage:0,
                fillOrderId:this.$route.query.fillOrderId,
+               cartObj:this.$route.query.cartObj
             }
         },
         methods: {
@@ -63,28 +64,32 @@
               //console.log("onInfinite");
               var self = this;
              
-              if(self.currentPage < self.totalPage){
+              if(this.currentPage < this.totalPage){
 
                 function load(){
                   self.axios.post(config.addressList, querystring.stringify({
                     'current_page':self.currentPage + 1,
                     'page_size':10
                   }))
-                  .then(response => {
-                    //console.log(response.data);
+                  .then(res => {
+                    //console.log(res.data);
                    
-                    if(response.data.success == true){
-                      let record = response.data;
+                    if(res.data.success){
+                      let record = res.data;
+                      //console.log(record);
                       self.currentPage = record.current_page;
                       self.totalPage = record.total_page;
+                      console.log("11" + self.lists);
                       self.lists = self.lists.concat(record.data);
-                      if(self.lists.length == 0){
+                      console.log(self.lists);
+                      // if(self.lists.length == 0){
 
-                        self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-                        return;
-                      }
+                      //   self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+                      //   return;
+                      // }
                     } else {
                       weui.topTips(res.data.message,1000);//提示出错
+                      return;
                     }
                     self.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
                     
@@ -156,13 +161,13 @@
             });
           },
           selectAddress(item){//"提交订单"页面跳转过来选择地址
-            if(!this.fillOrderId){
-                return;
-            } else {
-
+            if(this.fillOrderId || this.cartObj){
                 //this.$router.push({ path: '/fillOrder',query:{id:this.fillOrderId,addressId:item.id}});
                 this.$root.$data.store.write("fillOrderAddressId" + this.fillOrderId, {fillId:this.fillOrderId,addressId:item.id});
                 this.$router.go(-1);
+                
+            } else {
+                return; 
             }
           },
           getDefault(item){//获取列表中默认地址

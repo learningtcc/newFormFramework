@@ -79,12 +79,10 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Pagination<AddressInfo> findMyAddress(int current_page, int page_size) {
-//        MemberInfo memberInfo=(MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
-        String user_id = "58b9a959ecef4a22a666b067eb8c6113";
+        MemberInfo memberInfo=(MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
         RequestExample req=new RequestExample(page_size,current_page);
         RequestExample.Criteria ct = req.create();
-//        ct.getMust().add(req.createParam().addTerm("member_id", memberInfo.getId()));
-        ct.getMust().add(req.createParam().addTerm("member_id", user_id));
+        ct.getMust().add(req.createParam().addTerm("member_id", memberInfo.getId()));
         HashMap map=new HashMap();
         map.put("is_default","desc");
 //        map.put("create_time","desc");

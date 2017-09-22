@@ -22,7 +22,7 @@ public class StreetCultureServiceImpl implements StreetCultureService{
 
     public RestMessage list(Integer page_size, Integer current_page){
         RestMessage restMessage = new RestMessage();
-        Pagination<Map> advertising_info = run.queryListByExample("advertising_info", ImmutableMap.of("table_name", "street_culture_info","is_deleted","N"));
+        Pagination<Map> advertising_info = run.queryListByExample("advertising_info", ImmutableMap.of("table_name", "街区文化","is_deleted","N"));
         Pagination<Map> street_culture_info = run.queryListByExample("street_culture_info", ImmutableMap.of("is_deleted","N","is_using","Y","is_release","Y"),current_page, page_size);
         Map hot_street_culture_info = run.queryFirstByRName("street_culture_info", ImmutableMap.of("is_deleted","N","is_using","Y","is_release","Y","is_hot", "Y"));
 
@@ -34,6 +34,14 @@ public class StreetCultureServiceImpl implements StreetCultureService{
 
         restMessage.setData(map);
 
+        return restMessage;
+    }
+
+    @Override
+    public RestMessage addClicks(String id) {
+        Map<String, Object> map = run.queryOne("street_culture_info", id, "clicks");
+        Double clicks = Double.valueOf(map.get("clicks").toString());
+        RestMessage restMessage = run.update("street_culture_info", id, ImmutableMap.of("clicks", clicks + 1));
         return restMessage;
     }
 }

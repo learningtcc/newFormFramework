@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="loading" v-if="ishide"></div>
-        <div class="storeDiscounts" v-if="ishide2" v-for="lis in list.data">
+        <div class="storeDiscounts" v-if="ishide2 && lis.offer_status=='InHand'" v-for="lis in list.data">
             <router-link :to="{path:'/storeDetail',query:{id:lis.id}}">
                 <div class="moneyOff">
                     <img :src="lis.image_url">
@@ -9,16 +9,6 @@
                     <p class="storeCon storeOff">{{lis.offer_name}}</p>
                 </div>
             </router-link>
-            <!-- <div class="moneyOff">
-                <img src="../../assets/img/temp/discounts1.png">
-                <div class="storeName">义乌茶铺店铺优惠<span>还剩5天16小时结束</span></div>
-                <div class="storeCon storeOff2">满888元扣100元</div>
-            </div>
-            <div class="moneyOff">
-                <img src="../../assets/img/temp/discounts1.png">
-                <div class="storeName">义乌茶铺店铺优惠<span>还剩5天16小时结束</span></div>
-                <div class="storeCon storeOff3">店铺全场5折</div>
-            </div> -->
         </div>
     </div>
 </template>
@@ -31,7 +21,7 @@
             return {
                 list:{},
                 currentpage:1,
-                pagesize:5,
+                pagesize:3,
                 ishide:true,
                 ishide2:false,
             }

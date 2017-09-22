@@ -15,7 +15,7 @@
             </div>
         </header>   
         <div class="guideList">
-            <dl v-for="lis in lists">
+            <dl v-for="lis in lists" v-if="lis.is_shelves =='Y'">
                 <router-link :to="{path:'/productDetail',query:{id:lis.id}}">
                     <dt><img :src="lis.theme_pic"></dt>
                     <dd>

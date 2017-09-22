@@ -31,6 +31,13 @@
                   <p class="arrow"></p>
                 </router-link>
               </li>
+              <li>
+                <router-link :to="{path:'/cart'}" >
+                  <em class="icon"><img src="../../assets/img/user/ucenter_cart.png" alt=""></em>
+                  我的购物车
+                  <p class="arrow"></p>
+                </router-link>
+              </li>
             </ul>
         </div>
         <div class="userCenter_list">

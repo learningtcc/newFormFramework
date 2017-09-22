@@ -47,7 +47,9 @@ public class ThemeActivitiesServiceImpl implements ThemeActivitiesService{
 
         Map<String, Object> theme_activities = run.queryOne("theme_activities", id);
         Pagination<Map> image_info = run.queryListByExample("image_info", ImmutableMap.of("table_pk", id, "table_name", "theme_activities"));
-
+        Double  clicks = (Double) theme_activities.get("clicks");
+        //更新浏览量
+        run.update("theme_activities",id,ImmutableMap.of("clicks",clicks + 1));
         Map<String, Object> map = new HashMap<>();
         map.put("theme_activities",theme_activities);
         map.put("image_info",image_info);

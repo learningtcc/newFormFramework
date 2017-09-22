@@ -26,7 +26,8 @@
 
 
 <script> 
-import videojs from '../../../static/js/zy.media.min'
+import videojs from '../../../static/js/zy.media.min';
+//var qs = require('qs');
     export default{
       components: {
           videojs,
@@ -47,10 +48,25 @@ import videojs from '../../../static/js/zy.media.min'
                   }
               });
           }, 
+          getaddClick(){
+                var self=this;
+                console.log(self.id);
+                self.axios.get("/wechat/streetCulture/addClicks?id="+self.id
+                ).then(function(res){
+                    if(res.data.success){
+                      self.list=res.data.data;
+                    }else {
+                      alert(res.data.message)
+                    }
+                },function(response){
+
+              })
+            }
         },
         mounted(){
             var self=this;
             self.getDetail();
+            self.getaddClick();
 
         }
     }

@@ -5,7 +5,7 @@
           <div class="interactionCon" v-for="lis in list.data">
             <router-link :to="{path:'/interactionDetail',query:{id:lis.id}}">
               <div class="interactionHead">
-                  <img :src="lis.headImageUrl">
+                  <img :src="(lis.headImageUrl==''||lis.headImageUrl==null)?defalutImg:lis.headImageUrl">
                   <div class="interactionName">
                       <p class="interactionN">{{lis.publisherNickname}}</p>
                       <p class="interactionTime">{{lis.publisherTime}}</p>
@@ -34,6 +34,7 @@
     export default{
         data () {
             return {
+                defalutImg:'/static/img/face.jpg',
                 list:{},
                 currentpage:1,
                 pagesize:5,
@@ -48,8 +49,8 @@
               var self=this;
               for(var i=0;i<lis.picList.length;i++){
                 self.hotimg.push(lis.picList[i]);
-                console.log(lis.picList[i]);
-                console.log(lis.picList.length)
+                //console.log(lis.picList[i]);
+                //console.log(lis.picList.length)
                 if(i==lis.picList.length-1){
                   wx.previewImage({
                     current: '', // 当前显示图片的http链接

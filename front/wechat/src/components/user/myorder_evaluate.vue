@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="btn">
-            <a @click="submit">提交评价</a>
+            <a @click="uploadMedia">提交评价</a>
         </div>
     </div>
 </template>
@@ -75,13 +75,12 @@
                           this.imgArr.push(localIds[i]);
 
                         }
-                        
 
                     }
                 });
             },
             uploadMedia(){          
-                for(let i = 0; i < self.imgArr.length; i++){
+                for(let i = 0; i < this.imgArr.length; i++){
                   this.uploadQueue.push(this.imgArr[i]);
                 }
                 this.serverIds = [];
@@ -115,15 +114,15 @@
 
             },
             uploadMaterial(){//微信上传
+
                 this.axios.post('/wechat/material/upload', querystring.stringify({//提交评价
                     'serverids[]':this.serverIds.join(','),
                     'stuffix':'jpg'
                 }))
                 .then(res => {
-
                     if(res.data.success){
-                        for(var i = 0; i < response.data.data.length; i++){
-                            this.picList.push(response.data.data[i].url);
+                        for(var i = 0; i < res.data.data.length; i++){
+                            this.picList.push(res.data.data[i].url);
                         }
                         this.submit();//提交数据
                     }
@@ -137,6 +136,7 @@
                     weui.topTips(result.msg,1000);//提示出错
                     return;
                 }
+
                 var loading = weui.loading('请稍等', {});
                 this.axios.post('/wechat/commodityEvaluation/save', querystring.stringify({//提交评价
                     'orderId':this.id,
